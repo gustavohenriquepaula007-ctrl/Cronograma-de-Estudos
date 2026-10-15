@@ -982,6 +982,68 @@
 
         <!-- ABA DE PERFIL DO USUÁRIO (12/12): Identidade, Foto, Nível 1-10 e Calendário de Ofensiva -->
         <section id="workspace-col-profile" class="hidden lg:col-span-12 space-y-6">
+
+            <!-- ===================================================================== -->
+            <!-- BLOCO 1 (HTML - ABA PERFIL): AUTENTICAÇÃO GOOGLE & STATUS DA NUVEM    -->
+            <!-- Cole este bloco logo no início da <section id="workspace-col-profile"> -->
+            <!-- ===================================================================== -->
+            <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-indigo-500/30 dark:border-indigo-500/25 p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5 min-w-0">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/25 shrink-0">
+                        <i class="ph-fill ph-cloud-check text-2xl"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h3 class="text-sm font-extrabold font-display text-slate-900 dark:text-white">
+                                Sincronização na Nuvem (Firebase)
+                            </h3>
+                            <span id="cloud-sync-badge" class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                                Modo Offline Local
+                            </span>
+                        </div>
+                        <p id="cloud-sync-desc" class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                            Entre com sua conta Google para salvar e sincronizar seu cronograma em tempo real.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Estado Deslogado: Botão Elegante "Entrar com Google" -->
+                <div id="auth-logged-out-area" class="w-full sm:w-auto shrink-0">
+                    <button type="button" onclick="loginComGoogle()"
+                        class="w-full sm:w-auto px-5 py-2.5 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-800 dark:text-white border border-slate-200 dark:border-slate-700 font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 active:scale-95">
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+                            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+                            <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.8-.4-2.8s.2-2 .4-2.8L1.6 6.4C.6 8.4 0 10.6 0 12s.6 3.6 1.6 5.6l3.7-2.8z"/>
+                            <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 19.4 7.4 23 12 23z"/>
+                        </svg>
+                        <span>Entrar com Google</span>
+                    </button>
+                </div>
+
+                <!-- Estado Logado: Nome do Usuário + Botão "Sair" -->
+                <div id="auth-logged-in-area" class="hidden w-full sm:w-auto flex items-center justify-between sm:justify-end gap-3 bg-slate-100/90 dark:bg-slate-800/80 px-3.5 py-2 rounded-2xl border border-slate-200/80 dark:border-slate-700/70 shrink-0">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <img id="auth-user-photo" src="https://placehold.co/40x40/6366f1/ffffff?text=G" alt="Avatar Google"
+                            onerror="this.src='https://placehold.co/40x40/6366f1/ffffff?text=U'"
+                            class="w-8 h-8 rounded-xl object-cover border border-indigo-500/40 shrink-0">
+                        <div class="min-w-0">
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 leading-none">
+                                Conectado como
+                            </p>
+                            <p id="auth-user-name" class="text-xs font-extrabold text-slate-800 dark:text-white truncate max-w-[160px] mt-0.5">
+                                Usuário Google
+                            </p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="logoutFirebase()"
+                        class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/20 text-xs font-bold flex items-center gap-1 transition active:scale-95 shrink-0">
+                        <i class="ph-bold ph-sign-out"></i>
+                        <span>Sair</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- Topo da Aba de Perfil: Cartão de Identidade + Personalização de Nome e Foto -->
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm relative overflow-hidden">
                 <div class="absolute -right-12 -top-12 w-56 h-56 rounded-full bg-gradient-to-br from-indigo-500/15 via-purple-500/15 to-pink-500/15 blur-3xl pointer-events-none"></div>
@@ -1709,21 +1771,6 @@ self.addEventListener('fetch', (event) => {
             }
         }
 
-// 1. Função para injetar os dados que chegam do Firebase para a interface
-        window.atualizarEstadoDaNuvem = function(dados) {
-            if (dados.presets) presets = dados.presets;
-            if (dados.schedule) schedule = dados.schedule;
-            if (dados.visualTheme) visualTheme = dados.visualTheme;
-            if (dados.cardStyle) cardStyle = dados.cardStyle;
-            if (dados.dailyGoalHours !== undefined) dailyGoalHours = dados.dailyGoalHours;
-            if (dados.streakDates) streakDates = dados.streakDates;
-            if (dados.userProfile) userProfile = dados.userProfile;
-            
-            applyVisualConfig();
-            renderAll();
-        };
-
-        // 2. Função original de salvar, agora com envio para a nuvem
         function saveState() {
             try {
                 syncStreakWithCurrentWeek();
@@ -1735,17 +1782,9 @@ self.addEventListener('fetch', (event) => {
                 localStorage.setItem('econoplan_streak_v1', JSON.stringify(streakDates));
                 localStorage.setItem('econoplan_profile_v1', JSON.stringify(userProfile));
 
-                // NOVO: Enviar o pacote de dados completo para o Firebase
-                if (window.salvarDadosNaNuvem) {
-                    window.salvarDadosNaNuvem({
-                        presets,
-                        schedule,
-                        visualTheme,
-                        cardStyle,
-                        dailyGoalHours,
-                        streakDates,
-                        userProfile
-                    });
+                // Dispara o salvamento na nuvem (só executa se o usuário estiver autenticado)
+                if (typeof window.salvarDadosNaNuvem === 'function') {
+                    window.salvarDadosNaNuvem();
                 }
             } catch (err) {
                 console.error('Erro ao salvar estado:', err);
@@ -4011,73 +4050,218 @@ Regras importantes:
         }
     </script>
 
-<script type="module">
+    <!-- ========================================================================= -->
+    <!-- BLOCOS 2, 3 e 4 (SCRIPTS NO FINAL DO ARQUIVO, ANTES DE </body>):          -->
+    <!-- Importações v13.0.0, Login/Logout Google e Firestore por user.uid         -->
+    <!-- ========================================================================= -->
+    <script type="module">
+        // 2. IMPORTAÇÕES DO FIREBASE (v13.0.0 via CDN)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
-        // Importações da Autenticação
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+        import {
+            getAuth,
+            GoogleAuthProvider,
+            signInWithPopup,
+            signOut,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+            onSnapshot
+        } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyA51gX9Yh-xJYIV5dx7HMTrQOC6J0PnFTo",
-            authDomain: "econoplan-studio.firebaseapp.com",
-            projectId: "econoplan-studio",
-            storageBucket: "econoplan-studio.firebasestorage.app",
-            messagingSenderId: "660081325823",
-            appId: "1:660081325823:web:09afacdac451d317cdfeca",
-            measurementId: "G-93E9RBH0ZB"
-        };
+        // Cole aqui o seu objeto firebaseConfig do Console do Firebase:
+        const firebaseConfig = typeof __firebase_config !== 'undefined'
+            ? JSON.parse(__firebase_config)
+            : {
+                apiKey: "SUA_API_KEY",
+                authDomain: "SEU_PROJETO.firebaseapp.com",
+                projectId: "SEU_PROJETO",
+                storageBucket: "SEU_PROJETO.firebasestorage.app",
+                messagingSenderId: "SEU_SENDER_ID",
+                appId: "SEU_APP_ID"
+            };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+        let app = null;
+        let auth = null;
+        let db = null;
         const provider = new GoogleAuthProvider();
-        
-        let docRef = null;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+        } catch (err) {
+            console.warn("Configure suas credenciais do Firebase em firebaseConfig:", err);
+        }
+
+        // Estado de controle da sessão e do listener em tempo real
+        let usuarioAtual = null;
         let unsubscribeSnapshot = null;
+        let isApplyingRemoteUpdate = false;
 
-        // Função de Login acionada por um botão na interface
-        window.fazerLoginGoogle = async function() {
+        // 3. FUNÇÕES DE LOGIN E LOGOUT COM POP-UP (Expostas no window para o HTML)
+        window.loginComGoogle = async function () {
+            if (!auth) {
+                showToast("⚠️ Configure o firebaseConfig antes de fazer login.");
+                return;
+            }
             try {
-                await signInWithPopup(auth, provider);
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                showToast(`🎉 Bem-vindo(a), ${user.displayName || "Estudante"}!`);
             } catch (error) {
-                console.error("Erro no login:", error);
+                console.error("Erro no login com Google:", error);
+                showToast("⚠️ Não foi possível concluir o login com Google.");
             }
         };
 
-        // Escuta o estado da autenticação
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("Usuário logado:", user.displayName);
-                showToast(`Bem-vindo, ${user.displayName}!`);
-                
-                // Agora o documento salvo tem o ID exclusivo do usuário (user.uid)
-                docRef = doc(db, "estudos", user.uid);
-
-                // Inicia a sincronização de dados
-                unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
-                    if (docSnap.exists() && window.atualizarEstadoDaNuvem) {
-                        window.atualizarEstadoDaNuvem(docSnap.data());
-                    }
-                });
-            } else {
-                console.log("Nenhum usuário autenticado.");
-                if (unsubscribeSnapshot) unsubscribeSnapshot();
-                // Aqui você pode chamar uma função para mostrar a tela/botão de login
-            }
-        });
-
-        window.salvarDadosNaNuvem = async function(dadosAtualizados) {
-            if (!docRef) return; // Só salva se estiver logado
+        window.logoutFirebase = async function () {
+            if (!auth) return;
             try {
-                await setDoc(docRef, {
-                    ...dadosAtualizados,
-                    ultimaAtualizacao: new Date().toISOString()
-                }, { merge: true });
-            } catch (err) {
-                console.error("Erro ao salvar no Firestore:", err);
+                if (unsubscribeSnapshot) {
+                    unsubscribeSnapshot();
+                    unsubscribeSnapshot = null;
+                }
+                await signOut(auth);
+                showToast("👋 Você saiu da sua conta Google.");
+            } catch (error) {
+                console.error("Erro ao sair:", error);
+                showToast("⚠️ Erro ao encerrar a sessão.");
             }
         };
+
+        // 4. SALVAR E ESCUTAR DADOS NO FIRESTORE EM doc(db, 'estudos', user.uid)
+        window.salvarDadosNaNuvem = async function () {
+            // Só executa se o usuário estiver autenticado e não for uma atualização vinda do próprio banco
+            if (!db || !usuarioAtual || isApplyingRemoteUpdate) return;
+
+            try {
+                const userDocRef = doc(db, "estudos", usuarioAtual.uid);
+                await setDoc(
+                    userDocRef,
+                    {
+                        presets,
+                        schedule,
+                        dailyGoalHours,
+                        streakDates,
+                        userProfile,
+                         visualTheme,
+                        cardStyle,
+                        updatedAt: new Date().toISOString()
+                    },
+                    { merge: true }
+                );
+
+                const badge = document.getElementById("cloud-sync-badge");
+                if (badge) {
+                    badge.textContent = "☁️ Salvo na Nuvem";
+                }
+            } catch (error) {
+                console.error("Erro ao salvar no Firestore:", error);
+            }
+        };
+
+        function iniciarEscutaTempoReal(uid) {
+            // Cancela qualquer listener anterior antes de abrir um novo
+            if (unsubscribeSnapshot) {
+                unsubscribeSnapshot();
+                unsubscribeSnapshot = null;
+            }
+
+            const userDocRef = doc(db, "estudos", uid);
+
+            unsubscribeSnapshot = onSnapshot(
+                userDocRef,
+                (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        isApplyingRemoteUpdate = true;
+
+                        if (Array.isArray(data.presets)) presets = data.presets;
+                        if (Array.isArray(data.schedule)) schedule = data.schedule;
+                        if (typeof data.dailyGoalHours === "number") dailyGoalHours = data.dailyGoalHours;
+                        if (data.streakDates && typeof data.streakDates === "object") streakDates = data.streakDates;
+                        if (data.userProfile && typeof data.userProfile === "object") userProfile = data.userProfile;
+                        if (data.visualTheme) visualTheme = data.visualTheme;
+                        if (data.cardStyle) cardStyle = data.cardStyle;
+
+                        applyVisualConfig();
+                        renderAll();
+
+                        isApplyingRemoteUpdate = false;
+                    } else {
+                        // Primeiro acesso deste usuário: sobe os dados locais atuais para doc(db, 'estudos', user.uid)
+                        window.salvarDadosNaNuvem();
+                    }
+                },
+                (error) => {
+                    console.error("Erro no onSnapshot do Firestore:", error);
+                }
+            );
+        }
+
+        // Atualiza a interface da aba Perfil e gerencia o ciclo de vida da autenticação
+        function atualizarInterfaceAuth(user) {
+            const loggedOutArea = document.getElementById("auth-logged-out-area");
+            const loggedInArea = document.getElementById("auth-logged-in-area");
+            const userNameEl = document.getElementById("auth-user-name");
+            const userPhotoEl = document.getElementById("auth-user-photo");
+            const syncBadge = document.getElementById("cloud-sync-badge");
+            const syncDesc = document.getElementById("cloud-sync-desc");
+
+            if (user) {
+                if (loggedOutArea) loggedOutArea.classList.add("hidden");
+                if (loggedInArea) loggedInArea.classList.remove("hidden");
+                if (userNameEl) userNameEl.textContent = user.displayName || user.email || "Estudante";
+                if (userPhotoEl && user.photoURL) userPhotoEl.src = user.photoURL;
+
+                if (syncBadge) {
+                    syncBadge.className = "text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-500 dark:text-emerald-300 border border-emerald-500/30";
+                    syncBadge.textContent = "☁️ Sincronizado";
+                }
+                if (syncDesc) {
+                    syncDesc.textContent = `Sincronizando em tempo real em estudos/${user.uid.slice(0, 8)}...`;
+                }
+
+                // Se o perfil ainda estiver com o nome padrão, aproveita o nome/foto da conta Google
+                if (userProfile.name === "Estudante de Economia" && user.displayName) {
+                    userProfile.name = user.displayName;
+                }
+                if (!userProfile.photoDataUrl && user.photoURL) {
+                    userProfile.photoDataUrl = user.photoURL;
+                }
+                renderUserProfile();
+            } else {
+                if (loggedOutArea) loggedOutArea.classList.remove("hidden");
+                if (loggedInArea) loggedInArea.classList.add("hidden");
+
+                if (syncBadge) {
+                    syncBadge.className = "text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400";
+                    syncBadge.textContent = "Modo Offline Local";
+                }
+                if (syncDesc) {
+                    syncDesc.textContent = "Entre com sua conta Google para salvar e sincronizar seu cronograma em tempo real.";
+                }
+            }
+        }
+
+        if (auth) {
+            onAuthStateChanged(auth, (user) => {
+                usuarioAtual = user || null;
+                atualizarInterfaceAuth(usuarioAtual);
+
+                if (usuarioAtual) {
+                    // Usuário autenticado -> inicia onSnapshot em doc(db, 'estudos', user.uid)
+                    iniciarEscutaTempoReal(usuarioAtual.uid);
+                } else if (unsubscribeSnapshot) {
+                    // Usuário deslogou -> encerra listener do Firestore imediatamente
+                    unsubscribeSnapshot();
+                    unsubscribeSnapshot = null;
+                }
+            });
+        }
     </script>
-    
 </body>
 </html>
