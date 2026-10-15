@@ -4011,9 +4011,11 @@ Regras importantes:
         }
     </script>
 
-    <script type="module">
+<script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+        // Importações da Autenticação
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA51gX9Yh-xJYIV5dx7HMTrQOC6J0PnFTo",
@@ -4027,10 +4029,45 @@ Regras importantes:
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
         
-        const docRef = doc(db, "estudos", "perfil_principal");
+        let docRef = null;
+        let unsubscribeSnapshot = null;
+
+        // Função de Login acionada por um botão na interface
+        window.fazerLoginGoogle = async function() {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error("Erro no login:", error);
+            }
+        };
+
+        // Escuta o estado da autenticação
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Usuário logado:", user.displayName);
+                showToast(`Bem-vindo, ${user.displayName}!`);
+                
+                // Agora o documento salvo tem o ID exclusivo do usuário (user.uid)
+                docRef = doc(db, "estudos", user.uid);
+
+                // Inicia a sincronização de dados
+                unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+                    if (docSnap.exists() && window.atualizarEstadoDaNuvem) {
+                        window.atualizarEstadoDaNuvem(docSnap.data());
+                    }
+                });
+            } else {
+                console.log("Nenhum usuário autenticado.");
+                if (unsubscribeSnapshot) unsubscribeSnapshot();
+                // Aqui você pode chamar uma função para mostrar a tela/botão de login
+            }
+        });
 
         window.salvarDadosNaNuvem = async function(dadosAtualizados) {
+            if (!docRef) return; // Só salva se estiver logado
             try {
                 await setDoc(docRef, {
                     ...dadosAtualizados,
@@ -4040,22 +4077,6 @@ Regras importantes:
                 console.error("Erro ao salvar no Firestore:", err);
             }
         };
-
-        let primeiraCarga = true;
-        onSnapshot(docRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const dados = docSnap.data();
-                
-                if (window.atualizarEstadoDaNuvem) {
-                    window.atualizarEstadoDaNuvem(dados);
-                }
-                
-                if (primeiraCarga) {
-                    showToast("🔄 Sincronizado com a nuvem!");
-                    primeiraCarga = false;
-                }
-            }
-        });
     </script>
     
 </body>
