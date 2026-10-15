@@ -118,7 +118,7 @@
                     </div>
                     <div>
                         <h3 id="schedule-modal-title" class="text-lg font-bold font-display">Agendar Bloco de Estudo</h3>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Personalize o tópico, horário e prioridade da sessão</p>
+                        <p id="schedule-modal-subtitle" class="text-xs text-slate-500 dark:text-slate-400">Personalize o tópico, horário e prioridade da sessão</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeScheduleModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
@@ -407,130 +407,34 @@
         </div>
     </div>
 
-    <!-- Modal: Central PWA -->
+    <!-- Modal Simplificado: Instalar Aplicativo -->
     <div id="pwa-modal" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 transition-opacity duration-200">
-        <div id="pwa-modal-content" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200 max-h-[90vh] flex flex-col">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-emerald-500/25">
-                        <i class="ph-bold ph-device-tablet-speaker text-2xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold font-display">Central de Instalação PWA (Tablet Samsung & PC)</h3>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Instale direto pelo navegador ou baixe o <code class="text-indigo-500 font-bold">manifest.json</code> e <code class="text-emerald-500 font-bold">service-worker.js</code></p>
-                    </div>
-                </div>
-                <button type="button" onclick="closePwaModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                    <i class="ph ph-x text-xl"></i>
-                </button>
+        <div id="pwa-modal-content" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-80 sm:w-88 aspect-square p-6 shadow-2xl transform scale-95 transition-transform duration-200 flex flex-col items-center justify-between text-center relative">
+            <button type="button" onclick="closePwaModal()" class="absolute top-4 right-4 p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Fechar">
+                <i class="ph ph-x text-lg"></i>
+            </button>
+
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-emerald-500/25 mt-2">
+                <i class="ph-fill ph-heart text-3xl"></i>
             </div>
 
-            <div class="flex flex-wrap gap-1.5 mt-4 p-1 bg-slate-100 dark:bg-slate-800/80 rounded-2xl shrink-0">
-                <button type="button" onclick="switchPwaTab('install')" id="pwatab-btn-install" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition bg-indigo-600 text-white shadow-sm">
-                    📲 Instalar Aplicativo
-                </button>
-                <button type="button" onclick="switchPwaTab('manifest')" id="pwatab-btn-manifest" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-300">
-                    📄 manifest.json
-                </button>
-                <button type="button" onclick="switchPwaTab('sw')" id="pwatab-btn-sw" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-300">
-                    ⚙️ service-worker.js
-                </button>
-                <button type="button" onclick="switchPwaTab('sync')" id="pwatab-btn-sync" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-300">
-                    🔄 Backup PC ↔ Tablet
-                </button>
+            <div class="space-y-2 px-1">
+                <h3 class="text-lg font-extrabold font-display text-slate-900 dark:text-white">
+                    Muito obrigado! 🎓
+                </h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Obrigado por utilizar o <strong>EconoPlan Studio</strong> nos seus estudos! Confirme abaixo para instalar o aplicativo no seu dispositivo.
+                </p>
             </div>
 
-            <div class="mt-4 overflow-y-auto pr-1 flex-1 space-y-4">
-                <div id="pwatab-install" class="space-y-4">
-                    <div class="p-4 rounded-2xl bg-gradient-to-r from-indigo-600/15 via-purple-600/15 to-emerald-500/15 border border-indigo-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div>
-                            <span id="pwa-status-badge" class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 mb-1.5">
-                                <i class="ph-fill ph-check-circle"></i> Manifesto & Ícones PWA Ativos
-                            </span>
-                            <h4 class="text-sm font-bold text-slate-800 dark:text-white">Instalação Rápida em 1 Clique</h4>
-                            <p class="text-xs text-slate-500 dark:text-slate-300 mt-0.5">Se o seu navegador já liberou o prompt nativo de instalação, clique no botão ao lado.</p>
-                        </div>
-                        <button type="button" onclick="triggerNativeInstall()" id="native-install-modal-btn" class="shrink-0 px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-500/25 flex items-center gap-2 transition active:scale-95">
-                            <i class="ph-bold ph-download-simple text-base"></i>
-                            Instalar Aplicativo Agora
-                        </button>
-                    </div>
-
-                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/70 space-y-3">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                            <i class="ph-fill ph-folder-simple-star text-amber-400 text-base"></i>
-                            Arquivos do Kit PWA (Coloque na mesma pasta do <code class="text-indigo-400">index.html</code>)
-                        </h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                            <button type="button" onclick="downloadPwaFile('manifest.json')" class="p-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-indigo-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between transition group">
-                                <div class="text-left">
-                                    <p class="text-xs font-bold text-indigo-600 dark:text-indigo-400">manifest.json</p>
-                                    <p class="text-[10px] text-slate-400">Metadados e Ícones</p>
-                                </div>
-                                <i class="ph-bold ph-download-simple text-slate-400 group-hover:text-indigo-500"></i>
-                            </button>
-                            <button type="button" onclick="downloadPwaFile('service-worker.js')" class="p-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-emerald-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between transition group">
-                                <div class="text-left">
-                                    <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400">service-worker.js</p>
-                                    <p class="text-[10px] text-slate-400">Cache Offline Total</p>
-                                </div>
-                                <i class="ph-bold ph-download-simple text-slate-400 group-hover:text-emerald-500"></i>
-                            </button>
-                            <button type="button" onclick="downloadGeneratedPngIcons()" class="p-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-pink-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between transition group">
-                                <div class="text-left">
-                                    <p class="text-xs font-bold text-pink-600 dark:text-pink-400">Ícones PNG</p>
-                                    <p class="text-[10px] text-slate-400">192x192 e 512x512</p>
-                                </div>
-                                <i class="ph-bold ph-image text-slate-400 group-hover:text-pink-500"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="pwatab-manifest" class="hidden space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Arquivo: <code class="text-indigo-400">manifest.json</code></span>
-                        <div class="flex gap-2">
-                            <button type="button" onclick="copyCodeBlock('manifest-code-textarea', 'manifest.json copiado!')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold flex items-center gap-1.5 transition">
-                                <i class="ph-bold ph-copy"></i> Copiar Código
-                            </button>
-                            <button type="button" onclick="downloadPwaFile('manifest.json')" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 transition">
-                                <i class="ph-bold ph-download-simple"></i> Baixar manifest.json
-                            </button>
-                        </div>
-                    </div>
-                    <textarea id="manifest-code-textarea" readonly rows="13" class="w-full p-3.5 rounded-2xl bg-slate-950 text-emerald-300 font-mono text-[11px] border border-slate-800 focus:outline-none"></textarea>
-                </div>
-
-                <div id="pwatab-sw" class="hidden space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Arquivo: <code class="text-emerald-400">service-worker.js</code></span>
-                        <div class="flex gap-2">
-                            <button type="button" onclick="copyCodeBlock('sw-code-textarea', 'service-worker.js copiado!')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold flex items-center gap-1.5 transition">
-                                <i class="ph-bold ph-copy"></i> Copiar Código
-                            </button>
-                            <button type="button" onclick="downloadPwaFile('service-worker.js')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 transition">
-                                <i class="ph-bold ph-download-simple"></i> Baixar service-worker.js
-                            </button>
-                        </div>
-                    </div>
-                    <textarea id="sw-code-textarea" readonly rows="13" class="w-full p-3.5 rounded-2xl bg-slate-950 text-cyan-300 font-mono text-[11px] border border-slate-800 focus:outline-none"></textarea>
-                </div>
-
-                <div id="pwatab-sync" class="hidden space-y-3">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">
-                        Exporte ou cole o código JSON abaixo para transferir seus presets personalizados, metas e blocos de estudo entre o seu PC e o seu Tablet Samsung:
-                    </p>
-                    <textarea id="backup-json-textarea" rows="8" class="w-full p-3.5 rounded-2xl bg-slate-950 text-indigo-200 font-mono text-[11px] border border-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                    <div class="flex flex-wrap justify-end gap-2">
-                        <button type="button" onclick="copyCodeBlock('backup-json-textarea', 'Backup JSON copiado!')" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold flex items-center gap-1.5 transition">
-                            <i class="ph-bold ph-copy"></i> Copiar Backup JSON
-                        </button>
-                        <button type="button" onclick="importBackupJson()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 transition">
-                            <i class="ph-bold ph-upload-simple"></i> Carregar JSON no Calendário
-                        </button>
-                    </div>
-                </div>
+            <div class="w-full space-y-2">
+                <button type="button" onclick="triggerNativeInstall()" id="native-install-modal-btn" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition active:scale-95">
+                    <i class="ph-bold ph-check-circle text-base"></i>
+                    <span>Confirmar Instalação</span>
+                </button>
+                <button type="button" onclick="closePwaModal()" class="w-full py-2 rounded-xl text-[11px] font-semibold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                    Agora não
+                </button>
             </div>
         </div>
     </div>
@@ -781,7 +685,7 @@
 
     <main class="max-w-[1600px] mx-auto px-4 sm:px-6 py-5 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-        <!-- COLUNA ESQUERDA (3/12): Paleta de Presets Vibrantes & Timer Pomodoro -->
+        <!-- COLUNA ESQUERDA (3/12): Paleta de Presets Vibrantes -->
         <aside id="workspace-col-presets" class="hidden lg:block lg:col-span-3 space-y-5 lg:sticky lg:top-20">
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-sm">
                 <div class="flex items-center justify-between mb-3">
@@ -804,64 +708,69 @@
                     </div>
                 </div>
 
-                <div id="presets-list" class="space-y-2.5 max-h-[430px] overflow-y-auto pr-1 py-1"></div>
+                <div id="presets-list" class="space-y-2.5 max-h-[540px] overflow-y-auto pr-1 py-1"></div>
 
                 <button type="button" onclick="openPresetModal()" class="mt-3 w-full py-2.5 px-3 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 text-xs font-bold flex items-center justify-center gap-1.5 transition">
                     <i class="ph-bold ph-plus"></i>
                     Criar Novo Preset / Matéria
                 </button>
             </div>
-
-            <!-- Timer Pomodoro de Foco Acadêmico -->
-            <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-5 shadow-xl border border-indigo-500/30 relative overflow-hidden">
-                <div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-indigo-500/20 blur-2xl pointer-events-none"></div>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
-                        <i class="ph-fill ph-timer text-amber-400 text-base"></i> Timer de Foco
-                    </span>
-                    <div class="flex gap-1 text-[10px] font-bold">
-                        <button type="button" onclick="setPomodoroMode(25, 'Pomodoro 25m')" class="px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 transition">25m</button>
-                        <button type="button" onclick="setPomodoroMode(50, 'Deep Work 50m')" class="px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 transition">50m</button>
-                        <button type="button" onclick="setPomodoroMode(10, 'Pausa 10m')" class="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 transition">Pausa</button>
-                    </div>
-                </div>
-
-                <p id="pomodoro-active-label" class="text-xs text-slate-300 truncate mb-2">Sessão: Deep Work Econômico</p>
-
-                <div class="flex items-center justify-between my-3">
-                    <div id="pomodoro-display" class="font-display text-4xl font-extrabold tracking-wider">25:00</div>
-                    <div class="flex items-center gap-2">
-                        <button type="button" onclick="togglePomodoro()" id="pomodoro-play-btn" class="w-11 h-11 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-white flex items-center justify-center shadow-lg shadow-indigo-500/40 transition active:scale-95">
-                            <i id="pomodoro-play-icon" class="ph-fill ph-play text-xl"></i>
-                        </button>
-                        <button type="button" onclick="resetPomodoro()" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 flex items-center justify-center transition" title="Reiniciar Timer">
-                            <i class="ph-bold ph-arrow-counter-clockwise text-base"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                    <div id="pomodoro-progress" class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 h-full transition-all duration-300" style="width: 0%"></div>
-                </div>
-            </div>
         </aside>
 
         <!-- COLUNA CENTRAL (6/12): Calendário Interativo de Blocos de Horário -->
         <section id="workspace-col-calendar" class="lg:col-span-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
             <div class="p-4 border-b border-slate-200/70 dark:border-slate-800 flex flex-col gap-3">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <span id="active-preset-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-white shadow-sm"></span>
-                        <span class="text-xs text-slate-400 hidden sm:inline">← Toque em um horário para inserir</span>
+                <!-- Barra de Navegação entre Semanas (Semana Atual / Próxima Semana) -->
+                <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-2xl bg-slate-100/90 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/60">
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" onclick="changeWeekOffset(-1)" class="px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-indigo-500/15 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 text-xs font-bold flex items-center gap-1 transition active:scale-95" title="Ver semana anterior">
+                            <i class="ph-bold ph-caret-left"></i>
+                            <span class="hidden sm:inline">Anterior</span>
+                        </button>
+                        <button type="button" onclick="resetToCurrentWeek()" id="week-reset-today-btn" class="hidden px-2.5 py-1.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30 text-xs font-extrabold transition active:scale-95" title="Voltar para a semana atual">
+                            Hoje
+                        </button>
                     </div>
-                    <div class="flex items-center gap-2">
+
+                    <div class="text-center min-w-0 flex-1 px-1">
+                        <div class="flex items-center justify-center gap-1.5 flex-wrap">
+                            <span id="agenda-week-badge" class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30">
+                                Semana Atual
+                            </span>
+                            <span id="agenda-selected-day-full" class="text-xs font-extrabold font-display text-slate-800 dark:text-white truncate">
+                                Quinta-feira, 15 de Outubro
+                            </span>
+                        </div>
+                        <p id="agenda-week-range-label" class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5">
+                            12 de out. – 18 de out. de 2026
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" onclick="changeWeekOffset(1)" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold flex items-center gap-1 shadow-sm shadow-indigo-500/20 transition active:scale-95" title="Planejar a próxima semana">
+                            <span>Próxima Semana</span>
+                            <i class="ph-bold ph-caret-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Linha de Carimbo Rápido + Ações do Dia/Semana -->
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span id="active-preset-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-white shadow-sm truncate"></span>
+                        <span class="text-xs text-slate-400 hidden sm:inline">← Toque em um horário para agendar</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" id="copy-prev-week-btn" onclick="copyPreviousWeekSchedule()" class="hidden text-xs font-bold px-2.5 py-1.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/25 transition flex items-center gap-1" title="Copiar estrutura de blocos da semana anterior para esta semana">
+                            <i class="ph-bold ph-copy"></i> Copiar Semana Anterior
+                        </button>
                         <button type="button" onclick="clearDaySchedule()" class="text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/50 text-slate-500 hover:text-rose-500 transition flex items-center gap-1" title="Limpar blocos deste dia">
                             <i class="ph ph-broom"></i> Limpar Dia
                         </button>
                     </div>
                 </div>
 
-                <!-- Abas dos 7 Dias da Semana (Seg a Dom) -->
+                <!-- Abas dos 7 Dias da Semana com Dia do Mês Explícito (Seg a Dom) -->
                 <div class="grid grid-cols-7 gap-1.5" id="day-tabs-container" role="tablist" aria-label="Dias da semana"></div>
             </div>
 
@@ -1259,7 +1168,7 @@
   ]
 }`;
 
-        const SERVICE_WORKER_JS_CONTENT = `const CACHE_NAME = 'econoplan-studio-pwa-v2';
+        const SERVICE_WORKER_JS_CONTENT = `const CACHE_NAME = 'econoplan-studio-pwa-v1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -1364,9 +1273,6 @@ self.addEventListener('fetch', (event) => {
             document.getElementById('pwa-favicon').href = generatedIcons.icon192;
             document.getElementById('pwa-apple-icon').href = generatedIcons.icon192;
 
-            document.getElementById('manifest-code-textarea').value = MANIFEST_JSON_CONTENT;
-            document.getElementById('sw-code-textarea').value = SERVICE_WORKER_JS_CONTENT;
-
             fetch('./manifest.json', { method: 'HEAD' })
                 .then(res => {
                     if (!res.ok) throw new Error('Usando manifesto dinâmico');
@@ -1390,15 +1296,12 @@ self.addEventListener('fetch', (event) => {
                 e.preventDefault();
                 deferredInstallPrompt = e;
                 const btnText = document.getElementById('header-pwa-btn-text');
-                if (btnText) btnText.textContent = 'Instalar Aplicativo';
-                const statusBadge = document.getElementById('pwa-status-badge');
-                if (statusBadge) {
-                    statusBadge.innerHTML = '<i class="ph-fill ph-sparkle"></i> Pronto para Instalar no Dispositivo!';
-                }
+                if (btnText) btnText.textContent = 'Instalar App';
             });
 
             window.addEventListener('appinstalled', () => {
                 deferredInstallPrompt = null;
+                closePwaModal();
                 showToast('🎉 Aplicativo EconoPlan Studio instalado com sucesso!');
             });
         }
@@ -1587,10 +1490,12 @@ self.addEventListener('fetch', (event) => {
         const START_HOUR = 7;
         const END_HOUR = 22;
         const HOUR_HEIGHT = 68;
+        const MONTHS_SHORT_PT = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
         let presets = [];
         let schedule = [];
         let selectedDay = 2;
+        let selectedWeekOffset = 0; // 0 = Semana Atual, 1 = Próxima Semana, -1 = Semana Anterior
         let selectedPresetId = 'p_micro';
         let quickDuration = 1;
         let calendarView = 'daily';
@@ -1626,11 +1531,6 @@ self.addEventListener('fetch', (event) => {
         let newPresetIcon = '📊';
         let newPresetTheme = 'electricBlue';
 
-        let pomoTotalSeconds = 25 * 60;
-        let pomoRemainingSeconds = 25 * 60;
-        let pomoInterval = null;
-        let pomoRunning = false;
-
         window.onload = function () {
             initCurrentDay();
             loadState();
@@ -1648,6 +1548,7 @@ self.addEventListener('fetch', (event) => {
             streakViewMonth = now.getMonth();
             const jsDay = now.getDay();
             selectedDay = jsDay === 0 ? 6 : jsDay - 1;
+            selectedWeekOffset = 0;
             const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
             const str = now.toLocaleDateString('pt-BR', opts);
             const dateEl = document.getElementById('header-date-str');
@@ -1663,40 +1564,150 @@ self.addEventListener('fetch', (event) => {
             return `${y}-${m}-${d}`;
         }
 
-        function getDateForCurrentWeekDay(dayIdx) {
+        function getDateForWeekAndDay(weekOffset, dayIdx) {
             const now = new Date();
             now.setHours(12, 0, 0, 0);
             const jsDay = now.getDay();
             const todayWeekIdx = jsDay === 0 ? 6 : jsDay - 1;
             const target = new Date(now);
-            target.setDate(now.getDate() + (dayIdx - todayWeekIdx));
+            target.setDate(now.getDate() + (weekOffset * 7) + (dayIdx - todayWeekIdx));
             return target;
+        }
+
+        function getDateForCurrentWeekDay(dayIdx) {
+            return getDateForWeekAndDay(0, dayIdx);
+        }
+
+        function getWeekKey(weekOffset = selectedWeekOffset) {
+            const mondayDate = getDateForWeekAndDay(weekOffset, 0);
+            return formatDateKey(mondayDate);
+        }
+
+        function getBlockWeekKey(block) {
+            return block.weekKey || getWeekKey(0);
+        }
+
+        function isBlockInActiveWeek(block) {
+            return getBlockWeekKey(block) === getWeekKey(selectedWeekOffset);
+        }
+
+        function getActiveWeekSchedule() {
+            const activeKey = getWeekKey(selectedWeekOffset);
+            return schedule.filter(b => getBlockWeekKey(b) === activeKey);
+        }
+
+        function formatDayMonthShort(dateObj) {
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            return `${d}/${m}`;
+        }
+
+        function formatDayMonthLabel(dateObj) {
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            const mon = MONTHS_SHORT_PT[dateObj.getMonth()];
+            return `${d} ${mon}`;
+        }
+
+        function changeWeekOffset(delta) {
+            selectedWeekOffset += delta;
+            populateDaySelectsWithDates();
+            renderAll();
+            const badgeText = getWeekRelativeLabel(selectedWeekOffset);
+            showToast(`📅 Visualizando: ${badgeText}`);
+        }
+
+        function resetToCurrentWeek() {
+            const now = new Date();
+            const jsDay = now.getDay();
+            selectedWeekOffset = 0;
+            selectedDay = jsDay === 0 ? 6 : jsDay - 1;
+            populateDaySelectsWithDates();
+            renderAll();
+            showToast('📅 De volta para hoje na Semana Atual!');
+        }
+
+        function getWeekRelativeLabel(offset) {
+            if (offset === 0) return 'Semana Atual';
+            if (offset === 1) return 'Próxima Semana';
+            if (offset === -1) return 'Semana Passada';
+            if (offset > 1) return `Daqui a ${offset} Semanas`;
+            return `Há ${Math.abs(offset)} Semanas`;
+        }
+
+        function copyPreviousWeekSchedule() {
+            const prevWeekKey = getWeekKey(selectedWeekOffset - 1);
+            const targetWeekKey = getWeekKey(selectedWeekOffset);
+            const prevBlocks = schedule.filter(b => getBlockWeekKey(b) === prevWeekKey);
+
+            if (prevBlocks.length === 0) {
+                showToast('⚠️ A semana anterior não possui blocos agendados para copiar.');
+                return;
+            }
+
+            // Evita duplicar blocos idênticos no mesmo dia e horário
+            const existingTargetBlocks = schedule.filter(b => getBlockWeekKey(b) === targetWeekKey);
+            let copiedCount = 0;
+
+            prevBlocks.forEach((b, idx) => {
+                const alreadyExists = existingTargetBlocks.some(
+                    eb => eb.day === b.day && eb.start === b.start && eb.presetId === b.presetId
+                );
+                if (!alreadyExists) {
+                    schedule.push({
+                        ...b,
+                        id: 'b_' + Date.now() + '_cp_' + idx,
+                        weekKey: targetWeekKey,
+                        completed: false
+                    });
+                    copiedCount++;
+                }
+            });
+
+            saveState();
+            renderAll();
+            if (copiedCount > 0) {
+                showToast(`📋 ${copiedCount} bloco(s) copiado(s) da semana anterior para planejar!`);
+            } else {
+                showToast('ℹ️ Todos os horários da semana anterior já estavam presentes nesta semana.');
+            }
         }
 
         function createDefaultSeedStreakDates() {
             const seeded = {};
             // Preenche sexta, sábado e domingo da semana anterior como exemplo inicial
             [-1, -2, -3].forEach(offset => {
-                const d = getDateForCurrentWeekDay(offset);
+                const d = getDateForWeekAndDay(0, offset);
                 seeded[formatDateKey(d)] = true;
             });
             return seeded;
         }
 
         function syncStreakWithCurrentWeek() {
-            for (let d = 0; d < 7; d++) {
-                const dateObj = getDateForCurrentWeekDay(d);
-                const key = formatDateKey(dateObj);
-                const doneHours = schedule
-                    .filter(b => b.day === d && b.completed)
-                    .reduce((acc, b) => acc + b.duration, 0);
+            // Coleta todas as semanas conhecidas (incluindo a semana atual e a semana selecionada)
+            const weekKeysSet = new Set([getWeekKey(0), getWeekKey(selectedWeekOffset)]);
+            schedule.forEach(b => weekKeysSet.add(getBlockWeekKey(b)));
 
-                if (dailyGoalHours > 0 && doneHours >= dailyGoalHours) {
-                    streakDates[key] = true;
-                } else {
-                    delete streakDates[key];
+            weekKeysSet.forEach(wkKey => {
+                const parts = wkKey.split('-').map(Number);
+                if (parts.length !== 3) return;
+                const mondayObj = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
+
+                for (let d = 0; d < 7; d++) {
+                    const dateObj = new Date(mondayObj);
+                    dateObj.setDate(mondayObj.getDate() + d);
+                    const key = formatDateKey(dateObj);
+
+                    const doneHours = schedule
+                        .filter(b => getBlockWeekKey(b) === wkKey && b.day === d && b.completed)
+                        .reduce((acc, b) => acc + b.duration, 0);
+
+                    if (dailyGoalHours > 0 && doneHours >= dailyGoalHours) {
+                        streakDates[key] = true;
+                    } else if (wkKey === getWeekKey(0) || wkKey === getWeekKey(selectedWeekOffset)) {
+                        delete streakDates[key];
+                    }
                 }
-            }
+            });
         }
 
         function calculateCurrentStreakCount() {
@@ -1742,6 +1753,10 @@ self.addEventListener('fetch', (event) => {
                 });
 
                 schedule = savedSchedule ? JSON.parse(savedSchedule) : JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+                const currentMondayKey = getWeekKey(0);
+                schedule.forEach(b => {
+                    if (!b.weekKey) b.weekKey = currentMondayKey;
+                });
                 if (savedTheme) visualTheme = savedTheme;
                 if (savedCardStyle) cardStyle = savedCardStyle;
                 if (savedDailyGoal !== null && savedDailyGoal !== '') {
@@ -1766,33 +1781,94 @@ self.addEventListener('fetch', (event) => {
             } catch (err) {
                 presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS));
                 schedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+                const currentMondayKey = getWeekKey(0);
+                schedule.forEach(b => {
+                    if (!b.weekKey) b.weekKey = currentMondayKey;
+                });
                 streakDates = createDefaultSeedStreakDates();
                 syncStreakWithCurrentWeek();
             }
         }
 
-        function saveState() {
-            try {
-                syncStreakWithCurrentWeek();
-                localStorage.setItem('econoplan_presets_v1', JSON.stringify(presets));
-                localStorage.setItem('econoplan_schedule_v1', JSON.stringify(schedule));
-                localStorage.setItem('econoplan_theme_v1', visualTheme);
-                localStorage.setItem('econoplan_cardstyle_v1', cardStyle);
-                localStorage.setItem('econoplan_dailygoal_v1', String(dailyGoalHours));
-                localStorage.setItem('econoplan_streak_v1', JSON.stringify(streakDates));
-                localStorage.setItem('econoplan_profile_v1', JSON.stringify(userProfile));
+        function populateDaySelectsWithDates() {
+            const blockDaySelect = document.getElementById('block-day');
+            const aiDaySelect = document.getElementById('ai-planner-day');
 
-                // Dispara o salvamento na nuvem (só executa se o usuário estiver autenticado)
-                if (typeof window.salvarDadosNaNuvem === 'function') {
-                    window.salvarDadosNaNuvem();
+            const optionsHtml = DAYS_FULL.map((dayFull, idx) => {
+                const dObj = getDateForWeekAndDay(selectedWeekOffset, idx);
+                return `<option value="${idx}">${dayFull} (${formatDayMonthShort(dObj)})</option>`;
+            }).join('');
+
+            if (blockDaySelect) {
+                const prevVal = blockDaySelect.value || String(selectedDay);
+                blockDaySelect.innerHTML = optionsHtml;
+                blockDaySelect.value = prevVal;
+            }
+            if (aiDaySelect) {
+                const prevAiVal = aiDaySelect.value || String(selectedDay);
+                aiDaySelect.innerHTML = optionsHtml;
+                aiDaySelect.value = prevAiVal;
+            }
+        }
+
+        function renderAgendaWeekHeader() {
+            const mondayDate = getDateForWeekAndDay(selectedWeekOffset, 0);
+            const sundayDate = getDateForWeekAndDay(selectedWeekOffset, 6);
+            const selectedDateObj = getDateForWeekAndDay(selectedWeekOffset, selectedDay);
+
+            const badgeEl = document.getElementById('agenda-week-badge');
+            const selectedDayFullEl = document.getElementById('agenda-selected-day-full');
+            const rangeLabelEl = document.getElementById('agenda-week-range-label');
+            const resetTodayBtn = document.getElementById('week-reset-today-btn');
+            const copyPrevWeekBtn = document.getElementById('copy-prev-week-btn');
+
+            if (badgeEl) {
+                badgeEl.textContent = getWeekRelativeLabel(selectedWeekOffset);
+                if (selectedWeekOffset === 0) {
+                    badgeEl.className = 'text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30';
+                } else if (selectedWeekOffset > 0) {
+                    badgeEl.className = 'text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 border border-emerald-500/30';
+                } else {
+                    badgeEl.className = 'text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/30';
                 }
-            } catch (err) {
-                console.error('Erro ao salvar estado:', err);
+            }
+
+            if (selectedDayFullEl) {
+                const fullFormatted = selectedDateObj.toLocaleDateString('pt-BR', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long'
+                });
+                selectedDayFullEl.textContent = fullFormatted.charAt(0).toUpperCase() + fullFormatted.slice(1);
+            }
+
+            if (rangeLabelEl) {
+                const startStr = mondayDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+                const endStr = sundayDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+                rangeLabelEl.textContent = `Semana de ${startStr} a ${endStr}`;
+            }
+
+            if (resetTodayBtn) {
+                if (selectedWeekOffset !== 0) {
+                    resetTodayBtn.classList.remove('hidden');
+                } else {
+                    resetTodayBtn.classList.add('hidden');
+                }
+            }
+
+            if (copyPrevWeekBtn) {
+                if (selectedWeekOffset >= 1) {
+                    copyPrevWeekBtn.classList.remove('hidden');
+                } else {
+                    copyPrevWeekBtn.classList.add('hidden');
+                }
             }
         }
 
         function renderAll() {
             syncStreakWithCurrentWeek();
+            populateDaySelectsWithDates();
+            renderAgendaWeekHeader();
             renderPresetsList();
             renderActivePresetPill();
             renderQuickDurationBtns();
@@ -1971,13 +2047,14 @@ self.addEventListener('fetch', (event) => {
 
         function renderStreakCalendar() {
             const streakCount = calculateCurrentStreakCount();
-            const selectedDateObj = getDateForCurrentWeekDay(selectedDay);
+            const selectedDateObj = getDateForWeekAndDay(selectedWeekOffset, selectedDay);
             const selectedDateKey = formatDateKey(selectedDateObj);
             const todayObj = new Date();
             todayObj.setHours(12, 0, 0, 0);
             const todayKey = formatDateKey(todayObj);
 
-            const selectedDayDone = schedule
+            const activeWeekBlocks = getActiveWeekSchedule();
+            const selectedDayDone = activeWeekBlocks
                 .filter(b => b.day === selectedDay && b.completed)
                 .reduce((acc, b) => acc + b.duration, 0);
             const isSelectedDayLit = dailyGoalHours > 0 && selectedDayDone >= dailyGoalHours;
@@ -2032,10 +2109,10 @@ self.addEventListener('fetch', (event) => {
             const firstJsDay = firstOfMonth.getDay();
             const startOffset = firstJsDay === 0 ? 6 : firstJsDay - 1;
 
-            // Mapa de datas da semana atual para permitir clique direto
+            // Mapa de datas da semana ativa para permitir clique direto
             const currentWeekMap = {};
             for (let d = 0; d < 7; d++) {
-                currentWeekMap[formatDateKey(getDateForCurrentWeekDay(d))] = d;
+                currentWeekMap[formatDateKey(getDateForWeekAndDay(selectedWeekOffset, d))] = d;
             }
 
             let html = '';
@@ -2145,10 +2222,11 @@ self.addEventListener('fetch', (event) => {
 
         function renderPresetsList() {
             const container = document.getElementById('presets-list');
+            const activeWeekBlocks = getActiveWeekSchedule();
             container.innerHTML = presets.map(preset => {
                 const t = VIBRANT_THEMES[preset.theme] || VIBRANT_THEMES.electricBlue;
                 const isSelected = preset.id === selectedPresetId;
-                const weekHours = schedule
+                const weekHours = activeWeekBlocks
                     .filter(b => b.presetId === preset.id)
                     .reduce((acc, b) => acc + b.duration, 0);
                 const hasGoal = preset.weeklyGoal > 0;
@@ -2235,20 +2313,37 @@ self.addEventListener('fetch', (event) => {
 
         function renderDayTabs() {
             const container = document.getElementById('day-tabs-container');
+            const activeWeekBlocks = getActiveWeekSchedule();
+            const todayObj = new Date();
+            todayObj.setHours(12, 0, 0, 0);
+            const todayKey = formatDateKey(todayObj);
+
             container.innerHTML = DAYS_SHORT.map((dayName, idx) => {
                 const isSelected = idx === selectedDay;
-                const dayHours = schedule
+                const dateObj = getDateForWeekAndDay(selectedWeekOffset, idx);
+                const dateKey = formatDateKey(dateObj);
+                const isToday = dateKey === todayKey;
+                const dayNumber = String(dateObj.getDate()).padStart(2, '0');
+                const monthShort = MONTHS_SHORT_PT[dateObj.getMonth()];
+
+                const dayHours = activeWeekBlocks
                     .filter(b => b.day === idx)
                     .reduce((acc, b) => acc + b.duration, 0);
 
                 return `
                     <button type="button" role="tab" aria-selected="${isSelected}" onclick="selectDay(${idx})"
-                        class="py-2 px-1 rounded-2xl border text-center transition-all flex flex-col items-center justify-center ${
+                        class="relative py-2 px-1 rounded-2xl border text-center transition-all flex flex-col items-center justify-center ${
                             isSelected
                                 ? 'bg-gradient-to-b from-indigo-600 to-purple-600 text-white border-transparent shadow-lg shadow-indigo-500/25 scale-[1.02]'
-                                : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200/70 dark:border-slate-800 hover:border-indigo-400 text-slate-600 dark:text-slate-300'
+                                : isToday
+                                    ? 'bg-indigo-500/10 dark:bg-indigo-500/15 border-indigo-500/50 text-slate-800 dark:text-white hover:border-indigo-400'
+                                    : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200/70 dark:border-slate-800 hover:border-indigo-400 text-slate-600 dark:text-slate-300'
                         }">
-                        <span class="text-xs font-bold">${dayName}</span>
+                        ${isToday ? `<span class="text-[8px] font-extrabold uppercase tracking-wider px-1.5 py-0.2 rounded-full mb-0.5 ${isSelected ? 'bg-white/25 text-white' : 'bg-indigo-500 text-white'}">Hoje</span>` : ''}
+                        <span class="text-[11px] font-bold uppercase tracking-wide ${isSelected ? 'text-indigo-100' : 'text-slate-400 dark:text-slate-400'}">${dayName}</span>
+                        <span class="text-sm sm:text-base font-extrabold font-display leading-tight mt-0.5 ${isSelected ? 'text-white' : 'text-slate-800 dark:text-white'}">
+                            ${dayNumber} <span class="text-[10px] font-bold opacity-80">${monthShort}</span>
+                        </span>
                         <span class="text-[10px] mt-0.5 ${isSelected ? 'text-indigo-100 font-semibold' : 'text-slate-400'}">
                             ${dayHours > 0 ? formatDuration(dayHours) : 'Livre'}
                         </span>
@@ -2301,7 +2396,7 @@ self.addEventListener('fetch', (event) => {
                 `;
             }
 
-            const dayBlocks = schedule.filter(b => b.day === selectedDay);
+            const dayBlocks = getActiveWeekSchedule().filter(b => b.day === selectedDay);
             const blocksHtml = dayBlocks.map(block => {
                 const preset = getPresetById(block.presetId);
                 const t = VIBRANT_THEMES[preset.theme] || VIBRANT_THEMES.electricBlue;
@@ -2340,11 +2435,6 @@ self.addEventListener('fetch', (event) => {
                                     class="w-7 h-7 rounded-lg bg-black/20 hover:bg-pink-500/80 flex items-center justify-center transition">
                                     <i class="ph-fill ph-sparkle text-sm"></i>
                                 </button>
-                                <button type="button" onclick="startPomodoroForBlock('${block.id}', event)"
-                                    title="Iniciar Timer de Foco para este estudo"
-                                    class="w-7 h-7 rounded-lg bg-black/20 hover:bg-black/40 flex items-center justify-center transition">
-                                    <i class="ph-fill ph-timer text-sm"></i>
-                                </button>
                                 <button type="button" onclick="toggleBlockComplete('${block.id}', event)"
                                     title="${block.completed ? 'Marcar como pendente' : 'Concluir bloco (+XP)'}"
                                     class="w-7 h-7 rounded-lg ${block.completed ? 'bg-emerald-400 text-slate-950' : 'bg-black/20 hover:bg-black/40'} flex items-center justify-center transition">
@@ -2373,13 +2463,31 @@ self.addEventListener('fetch', (event) => {
 
         function renderWeeklyGrid() {
             const container = document.getElementById('weekly-grid');
+            const activeWeekBlocks = getActiveWeekSchedule();
+            const todayObj = new Date();
+            todayObj.setHours(12, 0, 0, 0);
+            const todayKey = formatDateKey(todayObj);
+
             let html = `<div class="grid grid-cols-8 gap-1.5 pb-2 border-b border-slate-200 dark:border-slate-800 text-center text-xs font-bold">
-                <div class="text-slate-400 py-2">Horário</div>
-                ${DAYS_SHORT.map((d, i) => `
-                    <button type="button" onclick="selectDay(${i}); switchCalendarView('daily');" class="cursor-pointer py-2 rounded-xl transition ${i === selectedDay ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 hover:bg-indigo-500/20'}">
-                        ${d}
-                    </button>
-                `).join('')}
+                <div class="text-slate-400 py-2 flex items-center justify-center">Horário</div>
+                ${DAYS_SHORT.map((d, i) => {
+                    const dObj = getDateForWeekAndDay(selectedWeekOffset, i);
+                    const isToday = formatDateKey(dObj) === todayKey;
+                    const isSelected = i === selectedDay;
+                    return `
+                        <button type="button" onclick="selectDay(${i}); switchCalendarView('daily');"
+                            class="cursor-pointer py-1.5 px-1 rounded-xl transition flex flex-col items-center justify-center ${
+                                isSelected
+                                    ? 'bg-indigo-600 text-white shadow-sm'
+                                    : isToday
+                                        ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 border border-indigo-500/40'
+                                        : 'bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 hover:bg-indigo-500/20'
+                            }">
+                            <span class="text-[11px] font-bold">${d}</span>
+                            <span class="text-[11px] font-extrabold font-display ${isSelected ? 'text-indigo-100' : 'opacity-85'}">${formatDayMonthShort(dObj)}</span>
+                        </button>
+                    `;
+                }).join('')}
             </div>`;
 
             for (let h = START_HOUR; h <= END_HOUR; h++) {
@@ -2387,7 +2495,7 @@ self.addEventListener('fetch', (event) => {
                 html += `<div class="grid grid-cols-8 gap-1.5 border-b border-slate-100 dark:border-slate-800/60 min-h-[54px] py-1 items-stretch">
                     <div class="text-[11px] font-bold text-slate-400 flex items-center justify-center">${timeStr}</div>
                     ${DAYS_SHORT.map((_, dayIdx) => {
-                        const blocksStartingHere = schedule.filter(b => b.day === dayIdx && Math.floor(b.start) === h);
+                        const blocksStartingHere = activeWeekBlocks.filter(b => b.day === dayIdx && Math.floor(b.start) === h);
                         if (blocksStartingHere.length > 0) {
                             return `<div class="flex flex-col gap-1">
                                 ${blocksStartingHere.map(b => {
@@ -2519,9 +2627,11 @@ self.addEventListener('fetch', (event) => {
             const preset = getPresetById(selectedPresetId);
             if (!preset) return;
 
+            const targetDateObj = getDateForWeekAndDay(selectedWeekOffset, dayIdx);
             const newBlock = {
                 id: 'b_' + Date.now(),
                 presetId: preset.id,
+                weekKey: getWeekKey(selectedWeekOffset),
                 day: dayIdx,
                 start: startHour,
                 duration: Math.min(quickDuration, 23 - startHour),
@@ -2535,7 +2645,7 @@ self.addEventListener('fetch', (event) => {
             selectedDay = dayIdx;
             saveState();
             renderAll();
-            showToast(`${preset.icon} ${preset.name} agendado às ${formatHour(startHour)}!`);
+            showToast(`${preset.icon} ${preset.name} agendado em ${formatDayMonthShort(targetDateObj)} às ${formatHour(startHour)}!`);
         }
 
         function populateHourSelect() {
@@ -2551,9 +2661,14 @@ self.addEventListener('fetch', (event) => {
         function openScheduleModal(blockId = null) {
             const presetSelect = document.getElementById('block-preset');
             presetSelect.innerHTML = presets.map(p => `<option value="${p.id}">${p.icon} ${escapeHtml(p.name)} (${escapeHtml(p.category)})</option>`).join('');
+            populateDaySelectsWithDates();
 
             const deleteBtn = document.getElementById('delete-block-btn');
             const modalTitle = document.getElementById('schedule-modal-title');
+            const modalSubtitle = document.getElementById('schedule-modal-subtitle');
+            if (modalSubtitle) {
+                modalSubtitle.textContent = `Agendando em: ${getWeekRelativeLabel(selectedWeekOffset)} (${document.getElementById('agenda-week-range-label')?.textContent || ''})`;
+            }
 
             if (blockId) {
                 const block = schedule.find(b => b.id === blockId);
@@ -2619,13 +2734,24 @@ self.addEventListener('fetch', (event) => {
             if (id) {
                 const idx = schedule.findIndex(b => b.id === id);
                 if (idx !== -1) {
-                    schedule[idx] = { ...schedule[idx], presetId, topic, day, start, duration, priority, notes };
+                    schedule[idx] = {
+                        ...schedule[idx],
+                        presetId,
+                        topic,
+                        day,
+                        start,
+                        duration,
+                        priority,
+                        notes,
+                        weekKey: schedule[idx].weekKey || getWeekKey(selectedWeekOffset)
+                    };
                 }
                 showToast('Bloco de estudo atualizado!');
             } else {
                 schedule.push({
                     id: 'b_' + Date.now(),
                     presetId,
+                    weekKey: getWeekKey(selectedWeekOffset),
                     topic,
                     day,
                     start,
@@ -2658,15 +2784,16 @@ self.addEventListener('fetch', (event) => {
             const block = schedule.find(b => b.id === blockId);
             if (!block) return;
 
+            const blockWk = getBlockWeekKey(block);
             const prevDayDone = schedule
-                .filter(b => b.day === block.day && b.completed)
+                .filter(b => getBlockWeekKey(b) === blockWk && b.day === block.day && b.completed)
                 .reduce((acc, b) => acc + b.duration, 0);
             const wasLit = dailyGoalHours > 0 && prevDayDone >= dailyGoalHours;
 
             block.completed = !block.completed;
 
             const newDayDone = schedule
-                .filter(b => b.day === block.day && b.completed)
+                .filter(b => getBlockWeekKey(b) === blockWk && b.day === block.day && b.completed)
                 .reduce((acc, b) => acc + b.duration, 0);
             const isNowLit = dailyGoalHours > 0 && newDayDone >= dailyGoalHours;
 
@@ -2690,10 +2817,12 @@ self.addEventListener('fetch', (event) => {
         }
 
         function clearDaySchedule() {
-            schedule = schedule.filter(b => b.day !== selectedDay);
+            const activeWeekKey = getWeekKey(selectedWeekOffset);
+            const targetDateObj = getDateForWeekAndDay(selectedWeekOffset, selectedDay);
+            schedule = schedule.filter(b => !(getBlockWeekKey(b) === activeWeekKey && b.day === selectedDay));
             saveState();
             renderAll();
-            showToast(`Horários de ${DAYS_FULL[selectedDay]} limpos.`);
+            showToast(`Horários de ${DAYS_FULL[selectedDay]} (${formatDayMonthShort(targetDateObj)}) limpos.`);
         }
 
         const AVAILABLE_ICONS = ['∑', '⚖️', '🌐', '📜', '📈', '📖', '☕', '🏛️', '💻', '🧠', '🔬', '🎯'];
@@ -2774,6 +2903,7 @@ self.addEventListener('fetch', (event) => {
         function calculateGamificationStats() {
             let totalXp = 0;
             let medalsEarned = 0;
+            const activeWeekBlocks = getActiveWeekSchedule();
 
             schedule.filter(b => b.completed).forEach(b => {
                 totalXp += Math.round(b.duration * 100);
@@ -2781,7 +2911,7 @@ self.addEventListener('fetch', (event) => {
             });
 
             presets.forEach(preset => {
-                const doneHours = schedule
+                const doneHours = activeWeekBlocks
                     .filter(b => b.presetId === preset.id && b.completed)
                     .reduce((acc, b) => acc + b.duration, 0);
 
@@ -2795,7 +2925,7 @@ self.addEventListener('fetch', (event) => {
                 }
             });
 
-            const todayDone = schedule
+            const todayDone = activeWeekBlocks
                 .filter(b => b.day === selectedDay && b.completed)
                 .reduce((acc, b) => acc + b.duration, 0);
             if (dailyGoalHours > 0 && todayDone >= dailyGoalHours) {
@@ -2954,13 +3084,14 @@ self.addEventListener('fetch', (event) => {
             document.getElementById('global-daily-goal-input').value = dailyGoalHours;
             updateModalWeeklyRequiredPreview();
 
+            const activeWeekBlocks = getActiveWeekSchedule();
             const container = document.getElementById('goals-modal-presets-list');
             container.innerHTML = presets.map(preset => {
                 const t = VIBRANT_THEMES[preset.theme] || VIBRANT_THEMES.electricBlue;
-                const doneHours = schedule
+                const doneHours = activeWeekBlocks
                     .filter(b => b.presetId === preset.id && b.completed)
                     .reduce((acc, b) => acc + b.duration, 0);
-                const plannedHours = schedule
+                const plannedHours = activeWeekBlocks
                     .filter(b => b.presetId === preset.id)
                     .reduce((acc, b) => acc + b.duration, 0);
 
@@ -3086,7 +3217,8 @@ self.addEventListener('fetch', (event) => {
                 }).join('');
             }
 
-            const todayBlocks = schedule.filter(b => b.day === selectedDay);
+            const activeWeekBlocks = getActiveWeekSchedule();
+            const todayBlocks = activeWeekBlocks.filter(b => b.day === selectedDay);
             const todayDone = todayBlocks.filter(b => b.completed).reduce((acc, b) => acc + b.duration, 0);
             const hasDailyGoal = dailyGoalHours > 0;
             const todayPct = hasDailyGoal ? Math.min(100, Math.round((todayDone / dailyGoalHours) * 100)) : 0;
@@ -3100,8 +3232,8 @@ self.addEventListener('fetch', (event) => {
 
             const weeklyRequiredByDailyGoal = dailyGoalHours > 0 ? dailyGoalHours * 7 : 0;
             const weekdaysRequiredByDailyGoal = dailyGoalHours > 0 ? dailyGoalHours * 5 : 0;
-            const weekPlanned = schedule.reduce((acc, b) => acc + b.duration, 0);
-            const weekDone = schedule.filter(b => b.completed).reduce((acc, b) => acc + b.duration, 0);
+            const weekPlanned = activeWeekBlocks.reduce((acc, b) => acc + b.duration, 0);
+            const weekDone = activeWeekBlocks.filter(b => b.completed).reduce((acc, b) => acc + b.duration, 0);
             const weekPct = weeklyRequiredByDailyGoal > 0 ? Math.min(100, Math.round((weekDone / weeklyRequiredByDailyGoal) * 100)) : 0;
 
             document.getElementById('metric-week-done').textContent = formatDuration(weekDone);
@@ -3123,7 +3255,7 @@ self.addEventListener('fetch', (event) => {
                 }
             }
 
-            const studyHours = schedule
+            const studyHours = activeWeekBlocks
                 .filter(b => b.presetId !== 'p_descanso')
                 .reduce((acc, b) => acc + b.duration, 0);
             document.getElementById('metric-liquido-estudo').textContent = `${formatDuration(studyHours)} agendadas`;
@@ -3132,7 +3264,7 @@ self.addEventListener('fetch', (event) => {
             const listEl = document.getElementById('subject-breakdown-list');
 
             const statsByPreset = presets.map(preset => {
-                const blocks = schedule.filter(b => b.presetId === preset.id);
+                const blocks = activeWeekBlocks.filter(b => b.presetId === preset.id);
                 const planned = blocks.reduce((acc, b) => acc + b.duration, 0);
                 const done = blocks.filter(b => b.completed).reduce((acc, b) => acc + b.duration, 0);
                 return { preset, planned, done };
@@ -3225,9 +3357,10 @@ self.addEventListener('fetch', (event) => {
         }
 
         function renderDayChecklist() {
-            document.getElementById('checklist-day-label').textContent = DAYS_FULL[selectedDay];
+            const selectedDateObj = getDateForWeekAndDay(selectedWeekOffset, selectedDay);
+            document.getElementById('checklist-day-label').textContent = `${DAYS_SHORT[selectedDay]}, ${formatDayMonthShort(selectedDateObj)}`;
             const container = document.getElementById('day-topics-checklist');
-            const dayBlocks = schedule
+            const dayBlocks = getActiveWeekSchedule()
                 .filter(b => b.day === selectedDay)
                 .sort((a, b) => a.start - b.start);
 
@@ -3318,6 +3451,11 @@ self.addEventListener('fetch', (event) => {
         function restoreDemoData() {
             presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS));
             schedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+            const currentMondayKey = getWeekKey(0);
+            schedule.forEach(b => {
+                b.weekKey = currentMondayKey;
+            });
+            selectedWeekOffset = 0;
             selectedPresetId = presets[0].id;
             dailyGoalHours = 4.5;
             streakDates = createDefaultSeedStreakDates();
@@ -3328,96 +3466,12 @@ self.addEventListener('fetch', (event) => {
             showToast('Cronograma de demonstração restaurado!');
         }
 
-        function setPomodoroMode(mins, label) {
-            clearInterval(pomoInterval);
-            pomoRunning = false;
-            pomoTotalSeconds = mins * 60;
-            pomoRemainingSeconds = mins * 60;
-            document.getElementById('pomodoro-active-label').textContent = `Sessão: ${label}`;
-            document.getElementById('pomodoro-play-icon').className = 'ph-fill ph-play text-xl';
-            updatePomodoroDisplay();
-        }
-
-        function startPomodoroForBlock(blockId, event) {
-            if (event) event.stopPropagation();
-            const block = schedule.find(b => b.id === blockId);
-            if (!block) return;
-            const preset = getPresetById(block.presetId);
-            setPomodoroMode(25, `${preset.icon} ${preset.name}: ${block.topic}`);
-            togglePomodoro();
-            showToast(`⏱️ Foco iniciado: ${preset.name}`);
-        }
-
-        function togglePomodoro() {
-            const icon = document.getElementById('pomodoro-play-icon');
-            if (pomoRunning) {
-                clearInterval(pomoInterval);
-                pomoRunning = false;
-                icon.className = 'ph-fill ph-play text-xl';
-            } else {
-                pomoRunning = true;
-                icon.className = 'ph-fill ph-pause text-xl';
-                pomoInterval = setInterval(() => {
-                    if (pomoRemainingSeconds > 0) {
-                        pomoRemainingSeconds--;
-                        updatePomodoroDisplay();
-                    } else {
-                        clearInterval(pomoInterval);
-                        pomoRunning = false;
-                        icon.className = 'ph-fill ph-play text-xl';
-                        showToast('🔔 Sessão de foco concluída! Hora de uma pausa.');
-                    }
-                }, 1000);
-            }
-        }
-
-        function resetPomodoro() {
-            clearInterval(pomoInterval);
-            pomoRunning = false;
-            pomoRemainingSeconds = pomoTotalSeconds;
-            document.getElementById('pomodoro-play-icon').className = 'ph-fill ph-play text-xl';
-            updatePomodoroDisplay();
-        }
-
-        function updatePomodoroDisplay() {
-            const m = Math.floor(pomoRemainingSeconds / 60);
-            const s = pomoRemainingSeconds % 60;
-            document.getElementById('pomodoro-display').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-            const pct = pomoTotalSeconds > 0 ? ((pomoTotalSeconds - pomoRemainingSeconds) / pomoTotalSeconds) * 100 : 0;
-            document.getElementById('pomodoro-progress').style.width = `${pct}%`;
-        }
-
         function openPwaModal() {
-            const backupPayload = {
-                version: 3,
-                userProfile,
-                dailyGoalHours,
-                streakDates,
-                presets,
-                schedule
-            };
-            document.getElementById('backup-json-textarea').value = JSON.stringify(backupPayload, null, 2);
-            switchPwaTab('install');
             showModal('pwa-modal', 'pwa-modal-content');
         }
 
         function closePwaModal() {
             hideModal('pwa-modal', 'pwa-modal-content');
-        }
-
-        function switchPwaTab(tab) {
-            ['install', 'manifest', 'sw', 'sync'].forEach(t => {
-                const contentEl = document.getElementById(`pwatab-${t}`);
-                const btnEl = document.getElementById(`pwatab-btn-${t}`);
-                if (!contentEl || !btnEl) return;
-                if (t === tab) {
-                    contentEl.classList.remove('hidden');
-                    btnEl.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition bg-indigo-600 text-white shadow-sm';
-                } else {
-                    contentEl.classList.add('hidden');
-                    btnEl.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-700/50';
-                }
-            });
         }
 
         async function triggerNativeInstall() {
@@ -3426,80 +3480,12 @@ self.addEventListener('fetch', (event) => {
                 const { outcome } = await deferredInstallPrompt.userChoice;
                 if (outcome === 'accepted') {
                     deferredInstallPrompt = null;
-                    showToast('🎉 Instalação iniciada no seu dispositivo!');
+                    closePwaModal();
+                    showToast('🎉 Obrigado! Instalação iniciada no seu dispositivo.');
                 }
             } else {
-                showToast('💡 Use o menu do navegador (⋮ → Instalar aplicativo) ou baixe os arquivos abaixo.');
-            }
-        }
-
-        function downloadPwaFile(filename) {
-            const content = filename === 'manifest.json' ? MANIFEST_JSON_CONTENT : SERVICE_WORKER_JS_CONTENT;
-            const mime = filename === 'manifest.json' ? 'application/json' : 'application/javascript';
-            const blob = new Blob([content], { type: mime });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showToast(`📥 Arquivo ${filename} baixado com sucesso!`);
-        }
-
-        function downloadGeneratedPngIcons() {
-            [
-                { name: 'icon-192.png', dataUrl: generatedIcons.icon192 },
-                { name: 'icon-512.png', dataUrl: generatedIcons.icon512 }
-            ].forEach(icon => {
-                const a = document.createElement('a');
-                a.href = icon.dataUrl;
-                a.download = icon.name;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            });
-            showToast('🖼️ Ícones icon-192.png e icon-512.png baixados!');
-        }
-
-        function copyCodeBlock(textareaId, toastMessage) {
-            const el = document.getElementById(textareaId);
-            if (!el) return;
-            el.select();
-            document.execCommand('copy');
-            showToast(`📋 ${toastMessage}`);
-        }
-
-        function importBackupJson() {
-            try {
-                const raw = document.getElementById('backup-json-textarea').value;
-                const parsed = JSON.parse(raw);
-                if (Array.isArray(parsed.presets) && Array.isArray(parsed.schedule)) {
-                    presets = parsed.presets;
-                    schedule = parsed.schedule;
-                    if (parsed.dailyGoalHours !== undefined) dailyGoalHours = parseFloat(parsed.dailyGoalHours) || 0;
-                    if (parsed.streakDates && typeof parsed.streakDates === 'object') {
-                        streakDates = parsed.streakDates;
-                    }
-                    if (parsed.userProfile && typeof parsed.userProfile === 'object') {
-                        userProfile = {
-                            name: parsed.userProfile.name || 'Estudante de Economia',
-                            bio: parsed.userProfile.bio || 'Ciências Econômicas & Métodos Quantitativos',
-                            avatarEmoji: parsed.userProfile.avatarEmoji || '🎓',
-                            photoDataUrl: parsed.userProfile.photoDataUrl || ''
-                        };
-                    }
-                    if (presets.length > 0) selectedPresetId = presets[0].id;
-                    saveState();
-                    renderAll();
-                    closePwaModal();
-                    showToast('✅ Backup JSON carregado com sucesso!');
-                } else {
-                    showToast('⚠️ Formato JSON inválido.');
-                }
-            } catch (e) {
-                showToast('⚠️ Erro ao ler o código JSON.');
+                closePwaModal();
+                showToast('💚 Obrigado! Para instalar, use o menu do navegador (⋮ → Instalar aplicativo).');
             }
         }
 
@@ -3781,6 +3767,7 @@ Regras importantes:
                     return {
                         id: 'ai_b_' + Date.now() + '_' + i,
                         presetId: validPreset.id,
+                        weekKey: getWeekKey(selectedWeekOffset),
                         day: targetDay,
                         start: cleanStart,
                         duration: cleanDur,
@@ -3856,17 +3843,23 @@ Regras importantes:
         function applyAiScheduleToCalendar(replaceDay) {
             if (!lastGeneratedAiBlocks.length) return;
             const targetDay = lastGeneratedAiBlocks[0].day;
+            const activeWeekKey = getWeekKey(selectedWeekOffset);
             if (replaceDay) {
-                schedule = schedule.filter(b => b.day !== targetDay);
+                schedule = schedule.filter(b => !(getBlockWeekKey(b) === activeWeekKey && b.day === targetDay));
             }
             lastGeneratedAiBlocks.forEach(b => {
-                schedule.push({ ...b, id: 'b_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6) });
+                schedule.push({
+                    ...b,
+                    weekKey: activeWeekKey,
+                    id: 'b_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6)
+                });
             });
             selectedDay = targetDay;
             saveState();
             renderAll();
             closeAiModal();
-            showToast(`✨ Cronograma IA aplicado em ${DAYS_FULL[targetDay]}!`);
+            const targetDateObj = getDateForWeekAndDay(selectedWeekOffset, targetDay);
+            showToast(`✨ Cronograma IA aplicado em ${DAYS_FULL[targetDay]} (${formatDayMonthShort(targetDateObj)})!`);
         }
 
         async function generateQuestsWithAI() {
@@ -4052,10 +4045,9 @@ Regras importantes:
 
     <!-- ========================================================================= -->
     <!-- BLOCOS 2, 3 e 4 (SCRIPTS NO FINAL DO ARQUIVO, ANTES DE </body>):          -->
-    <!-- Importações Firebase CDN, Login/Logout Google e Firestore por user.uid    -->
+    <!-- Importações Firebase, Login/Logout Google e Firestore por user.uid        -->
     <!-- ========================================================================= -->
     <script type="module">
-        // 2. IMPORTAÇÕES DO FIREBASE (v11.6.1 estável na CDN oficial da Google)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import {
             getAuth,
@@ -4073,7 +4065,6 @@ Regras importantes:
             onSnapshot
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Suas configurações oficiais do projeto econoplan-studio:
         const firebaseConfig = {
             apiKey: "AIzaSyA51gX9Yh-xJYIV5dx7HMTrQOC6J0PnFTo",
             authDomain: "econoplan-studio.firebaseapp.com",
