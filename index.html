@@ -359,28 +359,84 @@
             </div>
 
             <form id="goals-form" onsubmit="handleSaveGoals(event)" class="mt-4 flex-1 overflow-hidden flex flex-col">
-                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/70 mb-4 shrink-0">
-                    <div>
-                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-                            🎯 Meta de Estudo Diário (Horas/Dia)
-                        </label>
-                        <div class="flex items-center gap-2">
-                            <input type="number" id="global-daily-goal-input" step="0.5" min="0" max="16" required oninput="updateModalWeeklyRequiredPreview()"
-                                class="w-20 px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-bold text-indigo-600 dark:text-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <span class="text-xs text-slate-500 dark:text-slate-400">h/dia (+150 XP)</span>
-                            <button type="button" onclick="clearDailyGoalInModal()" class="ml-auto px-2.5 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 text-[11px] font-bold flex items-center gap-1 transition" title="Apagar meta diária">
-                                <i class="ph-bold ph-trash"></i> Apagar
-                            </button>
+                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/70 mb-3 shrink-0 space-y-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                                🎯 Meta de Estudo Diário (Horas/Dia)
+                            </label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="global-daily-goal-input" step="0.5" min="0" max="16" required oninput="updateModalWeeklyRequiredPreview()"
+                                    class="w-20 px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-bold text-indigo-600 dark:text-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <span class="text-xs text-slate-500 dark:text-slate-400">h/dia (+150 XP)</span>
+                                <button type="button" onclick="clearDailyGoalInModal()" class="px-2.5 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 text-[11px] font-bold flex items-center gap-1 transition" title="Apagar meta diária">
+                                    <i class="ph-bold ph-trash"></i> Apagar
+                                </button>
+                            </div>
                         </div>
-                        <p id="modal-weekly-required-preview" class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 mt-1.5">
-                            📅 Necessário na semana: 31h30m (7 dias) • 22h30m (5 dias úteis)
-                        </p>
+                        <div class="text-left sm:text-right">
+                            <p id="modal-weekly-required-preview" class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400">
+                                📅 Meta da semana: 31h30m (7 dias) • 22h30m (5 dias úteis)
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Referencial de Cobertura: Soma das Metas por Disciplina vs Meta Estabelecida na Semana -->
+                    <div id="modal-goals-coverage-card" class="p-3 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-700/80 space-y-2 transition-all">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <i id="modal-coverage-icon" class="ph-fill ph-scales text-amber-500 text-base"></i>
+                                <span class="text-xs font-extrabold text-slate-700 dark:text-slate-200">
+                                    Cobertura das Metas por Disciplina na Semana
+                                </span>
+                            </div>
+                            <span id="modal-coverage-badge" class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/30">
+                                Faltam 30m
+                            </span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                            <div id="modal-coverage-bar" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 rounded-full transition-all duration-300" style="width: 98%"></div>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-between gap-1 text-[11px]">
+                            <span id="modal-coverage-status-text" class="font-semibold text-slate-500 dark:text-slate-400">
+                                Faltam 30m nas metas por disciplina para cobrir a meta estabelecida na semana.
+                            </span>
+                            <span id="modal-coverage-numbers" class="font-extrabold font-display text-slate-700 dark:text-slate-200">
+                                Soma: 31h / Meta: 31h30m
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seletor de Semana para Definir 1 Missão por Semana por Matéria -->
+                <div class="flex flex-wrap items-center justify-between gap-2 px-3 py-2 mb-2.5 rounded-2xl bg-indigo-500/10 dark:bg-indigo-500/15 border border-indigo-500/25 shrink-0">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="ph-fill ph-sword text-amber-500 text-base shrink-0"></i>
+                        <div class="min-w-0">
+                            <p class="text-[11px] font-extrabold text-slate-800 dark:text-white truncate">
+                                Missões Semanais (<span id="modal-quest-week-title" class="text-indigo-600 dark:text-indigo-300">Semana Atual</span>)
+                            </p>
+                            <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                                1 missão por semana para cada matéria • O XP de semanas concluídas fica salvo!
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button type="button" onclick="changeGoalsModalWeek(-1)" class="px-2 py-1 rounded-lg bg-white dark:bg-slate-900 hover:bg-indigo-500/20 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[11px] font-bold flex items-center gap-1 transition" title="Ver missões da semana anterior">
+                            <i class="ph-bold ph-caret-left"></i>
+                        </button>
+                        <span id="modal-quest-week-dates" class="text-[11px] font-extrabold px-2 py-1 rounded-lg bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                            19/10 – 25/10
+                        </span>
+                        <button type="button" onclick="changeGoalsModalWeek(1)" class="px-2 py-1 rounded-lg bg-white dark:bg-slate-900 hover:bg-indigo-500/20 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[11px] font-bold flex items-center gap-1 transition" title="Definir missões da próxima semana">
+                            <i class="ph-bold ph-caret-right"></i>
+                        </button>
                     </div>
                 </div>
 
                 <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400 px-1 mb-2 shrink-0">
                     <span>Disciplina / Preset</span>
-                    <span>Meta Semanal (h), Missão & Ações</span>
+                    <span>Meta Semanal (h), Missão da Semana & Ações</span>
                 </div>
 
                 <div id="goals-modal-presets-list" class="space-y-2.5 overflow-y-auto pr-1 flex-1"></div>
@@ -1009,7 +1065,7 @@
   ]
 }`;
 
-        const SERVICE_WORKER_JS_CONTENT = `const CACHE_NAME = 'econoplan-studio-pwa-v7';
+        const SERVICE_WORKER_JS_CONTENT = `const CACHE_NAME = 'econoplan-studio-pwa-v8';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -1486,6 +1542,51 @@ self.addEventListener('fetch', (event) => {
             return 20;
         }
 
+        function ensurePresetWeeklyQuests(preset) {
+            if (!preset) return;
+            if (!preset.weeklyQuests || typeof preset.weeklyQuests !== 'object') {
+                preset.weeklyQuests = {};
+            }
+            const currentWk = getWeekKey(0);
+            if (!preset.weeklyQuests[currentWk] && typeof preset.questTitle === 'string' && preset.questTitle.trim() !== '') {
+                preset.weeklyQuests[currentWk] = {
+                    title: preset.questTitle.trim(),
+                    done: Boolean(preset.questDone)
+                };
+            }
+        }
+
+        function getPresetQuestForWeek(preset, weekKey = getWeekKey(selectedWeekOffset)) {
+            if (!preset) return { title: '', done: false };
+            ensurePresetWeeklyQuests(preset);
+            if (!preset.weeklyQuests[weekKey]) {
+                // Inicializa a semana com uma missão pendente baseada no título padrão da matéria
+                preset.weeklyQuests[weekKey] = {
+                    title: typeof preset.questTitle === 'string' ? preset.questTitle : '',
+                    done: false
+                };
+            }
+            return preset.weeklyQuests[weekKey];
+        }
+
+        function setPresetQuestForWeek(preset, weekKey, title, done = undefined) {
+            if (!preset) return;
+            ensurePresetWeeklyQuests(preset);
+            const existing = preset.weeklyQuests[weekKey] || { title: '', done: false };
+            const cleanTitle = String(title ?? '').trim();
+            const nextDone = done !== undefined ? Boolean(done) : Boolean(existing.done);
+
+            preset.weeklyQuests[weekKey] = {
+                title: cleanTitle,
+                done: cleanTitle ? nextDone : false
+            };
+
+            // Mantém questTitle atualizado como modelo para futuras semanas
+            if (cleanTitle) {
+                preset.questTitle = cleanTitle;
+            }
+        }
+
         const PROFILE_AVATAR_PRESETS = ['🎓', '📈', '⚖️', '🏛️', '🧠', '🌐', '∑', '🦉'];
         let userProfile = {
             name: 'Estudante de Economia',
@@ -1738,6 +1839,7 @@ self.addEventListener('fetch', (event) => {
                         p.questTitle = fallback.questTitle !== undefined ? fallback.questTitle : `Concluir revisão de ${p.name}`;
                     }
                     if (typeof p.questDone !== 'boolean') p.questDone = false;
+                    ensurePresetWeeklyQuests(p);
                 });
 
                 schedule = savedSchedule ? JSON.parse(savedSchedule) : JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
@@ -1768,6 +1870,7 @@ self.addEventListener('fetch', (event) => {
                 }
             } catch (err) {
                 presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+                presets.forEach(p => ensurePresetWeeklyQuests(p));
                 schedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
                 const currentMondayKey = getWeekKey(0);
                 schedule.forEach(b => {
@@ -2986,7 +3089,13 @@ self.addEventListener('fetch', (event) => {
                     weeklyGoal: goal,
                     defaultTopic: defaultTopicInput || `Estudo de ${name}`,
                     questTitle: goal > 0 ? `Cumprir meta semanal de ${name}` : '',
-                    questDone: false
+                    questDone: false,
+                    weeklyQuests: {
+                        [getWeekKey(selectedWeekOffset)]: {
+                            title: goal > 0 ? `Cumprir meta semanal de ${name}` : '',
+                            done: false
+                        }
+                    }
                 };
 
                 presets.push(newPreset);
@@ -3001,32 +3110,52 @@ self.addEventListener('fetch', (event) => {
         function calculateGamificationStats() {
             let totalXp = 0;
             let medalsEarned = 0;
-            const activeWeekBlocks = getActiveWeekSchedule();
 
+            // 1. XP de todos os blocos de estudo concluídos em qualquer semana
             schedule.filter(b => b.completed).forEach(b => {
                 totalXp += getBlockXp(b);
             });
 
-            presets.forEach(preset => {
-                const doneHours = activeWeekBlocks
-                    .filter(b => b.presetId === preset.id && b.completed)
-                    .reduce((acc, b) => acc + b.duration, 0);
+            // Coleta todas as semanas registradas
+            const allWeekKeys = new Set([getWeekKey(0), getWeekKey(selectedWeekOffset)]);
+            schedule.forEach(b => allWeekKeys.add(getBlockWeekKey(b)));
 
-                if (preset.weeklyGoal > 0 && doneHours >= preset.weeklyGoal) {
-                    totalXp += 250;
-                    medalsEarned++;
+            // 2. XP de metas semanais de horas batidas (+250 XP) e missões semanais concluídas (+150 XP por semana)
+            presets.forEach(preset => {
+                ensurePresetWeeklyQuests(preset);
+
+                if (preset.weeklyGoal > 0) {
+                    allWeekKeys.forEach(wkKey => {
+                        const doneHours = schedule
+                            .filter(b => getBlockWeekKey(b) === wkKey && b.presetId === preset.id && b.completed)
+                            .reduce((acc, b) => acc + b.duration, 0);
+                        if (doneHours >= preset.weeklyGoal) {
+                            totalXp += 250;
+                            medalsEarned++;
+                        }
+                    });
                 }
-                if (preset.questTitle && preset.questDone) {
-                    totalXp += 150;
-                    medalsEarned++;
-                }
+
+                Object.values(preset.weeklyQuests).forEach(q => {
+                    if (q && q.done && q.title) {
+                        totalXp += 150;
+                        medalsEarned++;
+                    }
+                });
             });
 
-            const todayDone = activeWeekBlocks
-                .filter(b => b.day === selectedDay && b.completed)
-                .reduce((acc, b) => acc + b.duration, 0);
-            if (dailyGoalHours > 0 && todayDone >= dailyGoalHours) {
-                totalXp += 150;
+            // 3. XP de metas diárias batidas (+150 XP por dia concluído no cronograma)
+            if (dailyGoalHours > 0) {
+                allWeekKeys.forEach(wkKey => {
+                    for (let d = 0; d < 7; d++) {
+                        const dayDone = schedule
+                            .filter(b => getBlockWeekKey(b) === wkKey && b.day === d && b.completed)
+                            .reduce((acc, b) => acc + b.duration, 0);
+                        if (dayDone >= dailyGoalHours) {
+                            totalXp += 150;
+                        }
+                    }
+                });
             }
 
             let currentRank = ACADEMIC_RANKS[0];
@@ -3090,25 +3219,29 @@ self.addEventListener('fetch', (event) => {
             const preset = presets.find(p => p.id === presetId);
             if (!preset) return;
 
-            // Se o modal de metas estiver aberto, preserva os valores digitados nos outros campos antes de zerar este
             const goalsModal = document.getElementById('goals-modal');
             if (goalsModal && !goalsModal.classList.contains('hidden')) {
                 syncGoalsModalInputsToState();
             }
 
+            const activeWk = getWeekKey(selectedWeekOffset);
+            const currentQuest = getPresetQuestForWeek(preset, activeWk);
             preset.weeklyGoal = 0;
-            preset.questTitle = '';
-            preset.questDone = false;
+            // Se a missão desta semana ainda não foi concluída, limpa; se já foi concluída, preserva o XP ganho
+            if (!currentQuest.done) {
+                setPresetQuestForWeek(preset, activeWk, '', false);
+            }
             saveState();
             renderAll();
 
             if (goalsModal && !goalsModal.classList.contains('hidden')) {
                 openGoalsModal();
             }
-            showToast(`🗑️ Meta e missão de "${preset.name}" foram apagadas.`);
+            showToast(`🗑️ Meta semanal de "${preset.name}" foi apagada.`);
         }
 
         function syncGoalsModalInputsToState() {
+            const activeWk = getWeekKey(selectedWeekOffset);
             const dailyInput = document.getElementById('global-daily-goal-input');
             if (dailyInput) {
                 const parsedDaily = parseFloat(dailyInput.value);
@@ -3128,8 +3261,10 @@ self.addEventListener('fetch', (event) => {
                 const pId = input.getAttribute('data-preset-quest-id');
                 const p = presets.find(item => item.id === pId);
                 if (p) {
-                    p.questTitle = input.value.trim();
-                    if (!p.questTitle) p.questDone = false;
+                    const currentQuest = getPresetQuestForWeek(p, activeWk);
+                    const newTitle = input.value.trim();
+                    // Se já estava concluída nesta semana e o usuário não limpou o campo, preserva o done: true
+                    setPresetQuestForWeek(p, activeWk, newTitle, newTitle ? currentQuest.done : false);
                 }
             });
         }
@@ -3138,20 +3273,22 @@ self.addEventListener('fetch', (event) => {
             if (event) event.stopPropagation();
             const preset = presets.find(p => p.id === presetId);
             if (!preset) return;
-            preset.questTitle = '';
-            preset.questDone = false;
+            const activeWk = getWeekKey(selectedWeekOffset);
+            setPresetQuestForWeek(preset, activeWk, '', false);
             saveState();
             renderAll();
-            showToast(`🗑️ Missão de "${preset.name}" apagada.`);
+            showToast(`🗑️ Missão da semana de "${preset.name}" removida.`);
         }
 
         function restorePresetGoal(presetId, event) {
             if (event) event.stopPropagation();
             const preset = presets.find(p => p.id === presetId);
             if (!preset) return;
+            const activeWk = getWeekKey(selectedWeekOffset);
             preset.weeklyGoal = 4;
-            if (!preset.questTitle) {
-                preset.questTitle = `Cumprir meta semanal de ${preset.name}`;
+            const currentQuest = getPresetQuestForWeek(preset, activeWk);
+            if (!currentQuest.title) {
+                setPresetQuestForWeek(preset, activeWk, `Cumprir meta semanal de ${preset.name}`, false);
             }
             saveState();
             renderAll();
@@ -3162,11 +3299,16 @@ self.addEventListener('fetch', (event) => {
             if (event) event.stopPropagation();
             const preset = presets.find(p => p.id === presetId);
             if (!preset) return;
-            preset.questTitle = `Concluir revisão e exercícios de ${preset.name.replace('Estudar ', '')}`;
-            preset.questDone = false;
+            const activeWk = getWeekKey(selectedWeekOffset);
+            setPresetQuestForWeek(
+                preset,
+                activeWk,
+                `Concluir revisão e exercícios de ${preset.name.replace('Estudar ', '')}`,
+                false
+            );
             saveState();
             renderAll();
-            showToast(`⚔️ Nova missão adicionada para ${preset.name}!`);
+            showToast(`⚔️ Nova missão da semana adicionada para ${preset.name}!`);
         }
 
         function clearDailyGoalInModal() {
@@ -3182,22 +3324,108 @@ self.addEventListener('fetch', (event) => {
             const inputEl = document.getElementById('global-daily-goal-input');
             const previewEl = document.getElementById('modal-weekly-required-preview');
             if (!inputEl || !previewEl) return;
-            const val = parseFloat(inputEl.value) || 0;
-            if (val <= 0) {
+
+            const dailyVal = Math.max(0, parseFloat(inputEl.value) || 0);
+            const week7 = dailyVal * 7;
+            const week5 = dailyVal * 5;
+
+            if (dailyVal <= 0) {
                 previewEl.textContent = '📅 Sem meta diária definida (0h semanais necessárias)';
             } else {
-                const week7 = val * 7;
-                const week5 = val * 5;
-                previewEl.textContent = `📅 Necessário na semana: ${formatDuration(week7)} (7 dias) • ${formatDuration(week5)} (5 dias úteis)`;
+                previewEl.textContent = `📅 Meta da semana: ${formatDuration(week7)} (7 dias) • ${formatDuration(week5)} (5 dias úteis)`;
+            }
+
+            // Soma todas as metas semanais por disciplina nos inputs do modal (ou estado atual se ainda não renderizados)
+            const goalInputs = document.querySelectorAll('[data-preset-goal-id]');
+            let sumDisciplineGoals = 0;
+            if (goalInputs.length > 0) {
+                goalInputs.forEach(inp => {
+                    const v = parseFloat(inp.value);
+                    if (!isNaN(v) && v > 0) sumDisciplineGoals += v;
+                });
+            } else {
+                sumDisciplineGoals = presets.reduce((acc, p) => acc + (Number(p.weeklyGoal) || 0), 0);
+            }
+
+            const badgeEl = document.getElementById('modal-coverage-badge');
+            const barEl = document.getElementById('modal-coverage-bar');
+            const statusTextEl = document.getElementById('modal-coverage-status-text');
+            const numbersEl = document.getElementById('modal-coverage-numbers');
+            const iconEl = document.getElementById('modal-coverage-icon');
+
+            if (!badgeEl || !barEl || !statusTextEl || !numbersEl) return;
+
+            numbersEl.textContent = `Soma das disciplinas: ${formatDuration(sumDisciplineGoals)} / Meta da semana: ${formatDuration(week7)}`;
+
+            if (week7 <= 0) {
+                barEl.style.width = sumDisciplineGoals > 0 ? '100%' : '0%';
+                badgeEl.className = 'text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+                badgeEl.textContent = 'Sem meta semanal fixa';
+                statusTextEl.textContent = 'Defina uma meta diária acima para comparar com a soma das disciplinas.';
+                if (iconEl) iconEl.className = 'ph-fill ph-scales text-slate-400 text-base';
+                return;
+            }
+
+            const diff = week7 - sumDisciplineGoals;
+            const pct = Math.min(100, Math.round((sumDisciplineGoals / week7) * 100));
+            barEl.style.width = `${pct}%`;
+
+            if (diff > 0.01) {
+                badgeEl.className = 'text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/30';
+                badgeEl.textContent = `⏳ Faltam ${formatDuration(diff)}`;
+                statusTextEl.innerHTML = `Faltam <strong class="text-amber-600 dark:text-amber-400">${formatDuration(diff)}</strong> nas metas por disciplina para cobrir a meta estabelecida na semana (${pct}% coberto).`;
+                if (iconEl) iconEl.className = 'ph-fill ph-scales text-amber-500 text-base';
+            } else if (Math.abs(diff) <= 0.01) {
+                badgeEl.className = 'text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 border border-emerald-500/30';
+                badgeEl.textContent = '✅ Faltam 0h (100% Coberto)';
+                statusTextEl.innerHTML = `<strong class="text-emerald-600 dark:text-emerald-400">Perfeito!</strong> As metas por disciplina cobrem exatamente 100% da meta estabelecida na semana.`;
+                if (iconEl) iconEl.className = 'ph-fill ph-check-circle text-emerald-500 text-base';
+            } else {
+                const extra = Math.abs(diff);
+                badgeEl.className = 'text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30';
+                badgeEl.textContent = `🚀 Coberta (+${formatDuration(extra)} extra)`;
+                statusTextEl.innerHTML = `<strong class="text-indigo-600 dark:text-indigo-400">Meta semanal coberta!</strong> Faltam 0h (as disciplinas superam a meta da semana em +${formatDuration(extra)}).`;
+                if (iconEl) iconEl.className = 'ph-fill ph-trophy text-indigo-500 text-base';
+            }
+        }
+
+        function changeGoalsModalWeek(delta) {
+            syncGoalsModalInputsToState();
+            selectedWeekOffset += delta;
+            saveState();
+            renderAll();
+            openGoalsModal();
+            showToast(`📅 Missões alteradas para: ${getWeekRelativeLabel(selectedWeekOffset)}`);
+        }
+
+        function toggleModalQuestStatus(presetId) {
+            syncGoalsModalInputsToState();
+            const preset = presets.find(p => p.id === presetId);
+            if (!preset) return;
+            const activeWk = getWeekKey(selectedWeekOffset);
+            const q = getPresetQuestForWeek(preset, activeWk);
+            if (!q.title) {
+                showToast('⚠️ Digite o título da missão desta semana antes de concluir.');
+                return;
+            }
+            q.done = !q.done;
+            saveState();
+            renderAll();
+            openGoalsModal();
+            if (q.done) {
+                showToast(`🏆 Missão de ${preset.name.replace('Estudar ', '')} concluída nesta semana (+150 XP)!`);
             }
         }
 
         function deleteAllGoals() {
+            const activeWk = getWeekKey(selectedWeekOffset);
             dailyGoalHours = 0;
             presets.forEach(p => {
                 p.weeklyGoal = 0;
-                p.questTitle = '';
-                p.questDone = false;
+                const q = getPresetQuestForWeek(p, activeWk);
+                if (!q.done) {
+                    setPresetQuestForWeek(p, activeWk, '', false);
+                }
             });
             saveState();
             renderAll();
@@ -3205,24 +3433,34 @@ self.addEventListener('fetch', (event) => {
             if (goalsModal && !goalsModal.classList.contains('hidden')) {
                 openGoalsModal();
             }
-            showToast('🗑️ Todas as metas e missões foram apagadas!');
+            showToast('🗑️ Metas semanais e missões pendentes foram apagadas!');
         }
 
         function togglePresetQuest(presetId, event) {
             if (event) event.stopPropagation();
             const preset = presets.find(p => p.id === presetId);
-            if (!preset || !preset.questTitle) return;
-            preset.questDone = !preset.questDone;
+            if (!preset) return;
+            const activeWk = getWeekKey(selectedWeekOffset);
+            const quest = getPresetQuestForWeek(preset, activeWk);
+            if (!quest.title) return;
+            quest.done = !quest.done;
             saveState();
             renderAll();
-            if (preset.questDone) {
-                showToast(`🏆 Missão de ${preset.name.replace('Estudar ', '')} cumprida! +150 XP!`);
+            if (quest.done) {
+                showToast(`🏆 Missão da semana de ${preset.name.replace('Estudar ', '')} cumprida! +150 XP!`);
             }
         }
 
         function openGoalsModal() {
             document.getElementById('global-daily-goal-input').value = dailyGoalHours;
-            updateModalWeeklyRequiredPreview();
+
+            const activeWk = getWeekKey(selectedWeekOffset);
+            const mondayDate = getDateForWeekAndDay(selectedWeekOffset, 0);
+            const sundayDate = getDateForWeekAndDay(selectedWeekOffset, 6);
+            const weekTitleEl = document.getElementById('modal-quest-week-title');
+            const weekDatesEl = document.getElementById('modal-quest-week-dates');
+            if (weekTitleEl) weekTitleEl.textContent = getWeekRelativeLabel(selectedWeekOffset);
+            if (weekDatesEl) weekDatesEl.textContent = `${formatDayMonthShort(mondayDate)} – ${formatDayMonthShort(sundayDate)}`;
 
             const activeWeekBlocks = getActiveWeekSchedule();
             const container = document.getElementById('goals-modal-presets-list');
@@ -3234,9 +3472,10 @@ self.addEventListener('fetch', (event) => {
                 const plannedHours = activeWeekBlocks
                     .filter(b => b.presetId === preset.id)
                     .reduce((acc, b) => acc + b.duration, 0);
+                const weekQuest = getPresetQuestForWeek(preset, activeWk);
 
                 return `
-                    <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border ${weekQuest.done ? 'border-emerald-500/40' : 'border-slate-200/80 dark:border-slate-700/70'} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0 sm:w-48 shrink-0">
                             <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${t.gradient} flex items-center justify-center text-white text-lg font-bold shadow-sm shrink-0">
                                 ${preset.icon}
@@ -3254,20 +3493,31 @@ self.addEventListener('fetch', (event) => {
                                 <label class="block text-[9px] font-bold uppercase text-slate-400 mb-0.5">Meta (h/sem)</label>
                                 <input type="number" step="0.5" min="0" max="40"
                                     data-preset-goal-id="${preset.id}"
+                                    oninput="updateModalWeeklyRequiredPreview()"
                                     value="${preset.weeklyGoal}"
                                     class="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-bold text-center focus:outline-none focus:ring-2 focus:ring-amber-500">
                             </div>
                             <div class="flex-1 min-w-[140px]">
-                                <label class="block text-[9px] font-bold uppercase text-slate-400 mb-0.5">Missão Semanal (Deixe vazio p/ sem missão)</label>
+                                <div class="flex items-center justify-between mb-0.5">
+                                    <label class="block text-[9px] font-bold uppercase text-slate-400">
+                                        Missão em ${formatDayMonthShort(mondayDate)}–${formatDayMonthShort(sundayDate)}
+                                    </label>
+                                    ${weekQuest.done ? '<span class="text-[9px] font-extrabold text-emerald-500">✓ +150 XP Garantido</span>' : ''}
+                                </div>
                                 <input type="text" maxlength="70"
                                     data-preset-quest-id="${preset.id}"
-                                    value="${escapeHtml(preset.questTitle || '')}"
-                                    placeholder="Sem missão ativa..."
-                                    class="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    value="${escapeHtml(weekQuest.title || '')}"
+                                    placeholder="Definir missão para esta semana..."
+                                    class="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border ${weekQuest.done ? 'border-emerald-500/50 text-emerald-600 dark:text-emerald-300 font-semibold' : 'border-slate-200 dark:border-slate-700'} text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
                             </div>
                             <div class="flex items-center gap-1 shrink-0">
+                                <button type="button" onclick="toggleModalQuestStatus('${preset.id}')"
+                                    title="${weekQuest.done ? 'Missão concluída nesta semana (clique para reabrir)' : 'Marcar missão desta semana como concluída (+150 XP)'}"
+                                    class="px-2.5 py-1.5 rounded-xl ${weekQuest.done ? 'bg-emerald-500 text-white' : 'bg-slate-200/70 dark:bg-slate-700/70 text-slate-500 dark:text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-500'} text-xs font-bold flex items-center gap-1 transition">
+                                    <i class="ph-bold ph-check"></i>
+                                </button>
                                 <button type="button" onclick="deletePresetGoal('${preset.id}', event)"
-                                    title="Apagar meta e missão desta matéria"
+                                    title="Zerar meta semanal desta matéria"
                                     class="px-2.5 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 text-xs font-bold flex items-center gap-1 transition">
                                     <i class="ph-bold ph-target"></i>
                                     <i class="ph-bold ph-trash"></i>
@@ -3283,6 +3533,7 @@ self.addEventListener('fetch', (event) => {
                 `;
             }).join('');
 
+            updateModalWeeklyRequiredPreview();
             showModal('goals-modal', 'goals-modal-content');
         }
 
@@ -3292,33 +3543,11 @@ self.addEventListener('fetch', (event) => {
 
         function handleSaveGoals(e) {
             e.preventDefault();
-            const newDaily = parseFloat(document.getElementById('global-daily-goal-input').value);
-            if (!isNaN(newDaily) && newDaily >= 0) {
-                dailyGoalHours = newDaily;
-            }
-
-            document.querySelectorAll('[data-preset-goal-id]').forEach(input => {
-                const pId = input.getAttribute('data-preset-goal-id');
-                const val = parseFloat(input.value);
-                const preset = presets.find(p => p.id === pId);
-                if (preset && !isNaN(val) && val >= 0) {
-                    preset.weeklyGoal = val;
-                }
-            });
-
-            document.querySelectorAll('[data-preset-quest-id]').forEach(input => {
-                const pId = input.getAttribute('data-preset-quest-id');
-                const preset = presets.find(p => p.id === pId);
-                if (preset) {
-                    preset.questTitle = input.value.trim();
-                    if (!preset.questTitle) preset.questDone = false;
-                }
-            });
-
+            syncGoalsModalInputsToState();
             saveState();
             renderAll();
             closeGoalsModal();
-            showToast('🎯 Metas e missões gamificadas salvas com sucesso!');
+            showToast('🎯 Metas e missões da semana salvas com sucesso!');
         }
 
         function renderMetricsAndDistribution() {
@@ -3428,6 +3657,8 @@ self.addEventListener('fetch', (event) => {
                 const target = preset.weeklyGoal || 0;
                 const goalPct = hasGoal ? Math.min(100, Math.round((done / target) * 100)) : 0;
                 const isGoalMet = hasGoal && done >= target;
+                const activeWk = getWeekKey(selectedWeekOffset);
+                const weekQuest = getPresetQuestForWeek(preset, activeWk);
 
                 return `
                     <div class="p-3 rounded-2xl border ${isGoalMet ? 'border-amber-500/50 bg-amber-500/5 dark:bg-amber-500/10' : 'border-slate-200/70 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40'} transition space-y-2">
@@ -3473,19 +3704,22 @@ self.addEventListener('fetch', (event) => {
                             </div>
                         ` : ''}
 
-                        ${preset.questTitle ? `
+                        ${weekQuest.title ? `
                             <div class="pt-1 flex items-center justify-between gap-1.5 text-[11px]">
                                 <div onclick="togglePresetQuest('${preset.id}', event)" class="cursor-pointer flex-1 min-w-0 flex items-center gap-1.5 group">
-                                    <i class="ph-fill ph-sword ${preset.questDone ? 'text-emerald-500' : 'text-amber-500'}"></i>
-                                    <span class="truncate ${preset.questDone ? 'line-through text-slate-400' : 'text-slate-600 dark:text-slate-300 group-hover:text-indigo-400'}">
-                                        ${escapeHtml(preset.questTitle)}
+                                    <i class="ph-fill ph-sword ${weekQuest.done ? 'text-emerald-500' : 'text-amber-500'}"></i>
+                                    <span class="truncate ${weekQuest.done ? 'line-through text-slate-400' : 'text-slate-600 dark:text-slate-300 group-hover:text-indigo-400'}">
+                                        ${escapeHtml(weekQuest.title)}
                                     </span>
                                 </div>
                                 <div class="flex items-center gap-1 shrink-0">
-                                    <span onclick="togglePresetQuest('${preset.id}', event)" class="cursor-pointer text-[10px] font-bold px-1.5 py-0.5 rounded-md ${preset.questDone ? 'bg-emerald-500/20 text-emerald-500 dark:text-emerald-300' : 'bg-slate-200/70 dark:bg-slate-800 text-slate-400'}">
-                                        ${preset.questDone ? '✓ +150 XP' : '+150 XP'}
+                                    <span onclick="togglePresetQuest('${preset.id}', event)" class="cursor-pointer text-[10px] font-bold px-1.5 py-0.5 rounded-md ${weekQuest.done ? 'bg-emerald-500/20 text-emerald-500 dark:text-emerald-300' : 'bg-slate-200/70 dark:bg-slate-800 text-slate-400'}">
+                                        ${weekQuest.done ? '✓ +150 XP' : '+150 XP'}
                                     </span>
-                                    <button type="button" onclick="deletePresetQuest('${preset.id}', event)" class="w-5 h-5 rounded-md text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 flex items-center justify-center transition" title="Apagar missão">
+                                    <button type="button" onclick="openGoalsModal()" class="w-5 h-5 rounded-md text-slate-400 hover:text-indigo-500 hover:bg-indigo-500/10 flex items-center justify-center transition" title="Editar missão desta semana">
+                                        <i class="ph-bold ph-pencil-simple text-xs"></i>
+                                    </button>
+                                    <button type="button" onclick="deletePresetQuest('${preset.id}', event)" class="w-5 h-5 rounded-md text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 flex items-center justify-center transition" title="Remover missão desta semana">
                                         <i class="ph-bold ph-x text-xs"></i>
                                     </button>
                                 </div>
@@ -3493,7 +3727,7 @@ self.addEventListener('fetch', (event) => {
                         ` : `
                             <div class="pt-1 flex justify-end">
                                 <button type="button" onclick="restorePresetQuest('${preset.id}', event)" class="text-[10px] font-bold text-amber-500 hover:text-amber-400 flex items-center gap-1 transition">
-                                    <i class="ph-bold ph-plus"></i> Adicionar Missão (+150 XP)
+                                    <i class="ph-bold ph-plus"></i> Definir Missão da Semana (+150 XP)
                                 </button>
                             </div>
                         `}
@@ -3596,6 +3830,7 @@ self.addEventListener('fetch', (event) => {
 
         function restoreDemoData() {
             presets = JSON.parse(JSON.stringify(DEFAULT_PRESETS));
+            presets.forEach(p => ensurePresetWeeklyQuests(p));
             schedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
             const currentMondayKey = getWeekKey(0);
             schedule.forEach(b => {
